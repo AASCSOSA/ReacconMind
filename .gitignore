@@ -1,3 +1,4 @@
+# Archivos y carpetas generados por Maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -7,11 +8,14 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
-# Eclipse m2e generated files
-# Eclipse Core
-.project
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
+# Archivos de configuración de Visual Studio Code
+.vscode/
+
+# Otros archivos que no deberían estar en el control de versiones
+HELP.md
+# Ignora el archivo de configuración de la base de datos
+src/main/resources/application.properties
+# Permite el archivo de ejemplo
+!src/main/resources/application.properties.example
