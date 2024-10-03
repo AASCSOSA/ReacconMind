@@ -13,9 +13,17 @@ buildNumber.properties
 # Archivos de configuración de Visual Studio Code
 .vscode/
 
+#Archivo de explicación de la conexión con mongoDb
+src/main/resources/connectionDbMongo.example
+
 # Otros archivos que no deberían estar en el control de versiones
 HELP.md
 # Ignora el archivo de configuración de la base de datos
 src/main/resources/application.properties
 # Permite el archivo de ejemplo
 !src/main/resources/application.properties.example
+
+# Ignora el id intelliJ
+
+.idea/
+*.iml
