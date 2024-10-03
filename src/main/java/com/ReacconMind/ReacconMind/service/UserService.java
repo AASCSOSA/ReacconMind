@@ -28,8 +28,3 @@ public class UserService {
         return userRepository.findById(idUser).get();
     }
 
-    public void delete(Integer idUser) {
-        userRepository.deleteById(idUser);
-    }
-
-}
