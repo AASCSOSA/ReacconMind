@@ -13,6 +13,7 @@ CREATE TABLE User (
     username VARCHAR(50) NOT NULL UNIQUE,
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status BOOLEAN NOT NULL DEFAULT 1, -- 1 Ususario activo: 0 Usuario inactivo 
     INDEX (email),
     INDEX (username)
 );

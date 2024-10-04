@@ -28,11 +28,11 @@ public class UserService {
     }
 
     public void save(User user) {
-        if (userRepository.existsById(user.getIdUser()) ||
-            userRepository.findByEmail(user.getEmail()) != null ||
-            userRepository.findByUserName(user.getUserName()) != null) {
-            throw new UserAlreadyExistsException("User already exists with the same ID, email, or username.");
-        }
+        // if (userRepository.existsById(user.getIdUser()) ||
+        //     userRepository.findByEmail(user.getEmail()) != null ||
+        //     userRepository.findByUserName(user.getUserName()) != null) {
+        //     throw new UserAlreadyExistsException("User already exists with the same ID, email, or username.");
+        // }
         userRepository.save(user);
     }
 

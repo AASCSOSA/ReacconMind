@@ -28,6 +28,7 @@ public class User {
     private String userName;
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
+    private boolean status;
 
 
     public int getIdUser() {
@@ -100,6 +101,14 @@ public class User {
 
     public void setTypeAuth(AuthType typeAuth) {
         this.typeAuth = typeAuth;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
 }
