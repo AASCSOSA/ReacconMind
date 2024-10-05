@@ -13,7 +13,7 @@ CREATE TABLE User (
     username VARCHAR(50) NOT NULL UNIQUE,
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status BOOLEAN NOT NULL DEFAULT 1, -- 1 Ususario activo: 0 Usuario inactivo 
+    status ENUM ('Active','Inactive') DEFAULT 'Active', 
     INDEX (email),
     INDEX (username)
 );
@@ -48,22 +48,22 @@ CREATE TABLE Hashtag (
 );
 
 CREATE TABLE PublicationHashtag (
-    idPublicationHashtag INT PRIMARY KEY AUTO_INCREMENT,
     idPublication INT NOT NULL,
     idHashtag INT NOT NULL,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE,
     FOREIGN KEY (idHashtag) REFERENCES Hashtag(idHashtag) ON DELETE CASCADE,
-    UNIQUE (idPublication, idHashtag)
+    PRIMARY KEY (idPublication, idHashtag) -- Llave primaria compuesta
 );
 
 CREATE TABLE Follower (
-    idFollower INT PRIMARY KEY AUTO_INCREMENT,
     idUserFollowing INT NOT NULL,
-    idUserFollowed INT NOT NULL,
+    idUserFollower INT NOT NULL,
     dateFollowing TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUserFollowing) REFERENCES User(idUser) ON DELETE CASCADE,
-    FOREIGN KEY (idUserFollowed) REFERENCES User(idUser) ON DELETE CASCADE,
-    UNIQUE (idUserFollowing, idUserFollowed)
+    FOREIGN KEY (idUserFollower) REFERENCES User(idUser) ON DELETE CASCADE,
+    PRIMARY KEY (idUserFollower, idUserFollowing), -- Llave primaria compuesta
+    CONSTRAINT checkFollowerId
+    CHECK (idUserFollower <> idUserFollowing)
 );
 
 CREATE TABLE Tendency (
@@ -75,12 +75,11 @@ CREATE TABLE Tendency (
 );
 
 CREATE TABLE TendencyHashtag (
-    idTendencyHashtag INT PRIMARY KEY AUTO_INCREMENT,
     idTendency INT NOT NULL,
     idHashtag INT NOT NULL,
     FOREIGN KEY (idTendency) REFERENCES Tendency(idTendency) ON DELETE CASCADE,
     FOREIGN KEY (idHashtag) REFERENCES Hashtag(idHashtag) ON DELETE CASCADE,
-    UNIQUE (idTendency, idHashtag)
+    PRIMARY KEY (idTendency, idHashtag) -- Llave primaria compuesta
 );
 
 CREATE TABLE ModerationType (
@@ -89,7 +88,6 @@ CREATE TABLE ModerationType (
 );
 
 CREATE TABLE Moderation (
-    idModeration INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     idPublication INT NOT NULL,
     idModerationType INT NOT NULL, -- Referencia a la tabla de tipos de moderación
@@ -97,7 +95,8 @@ CREATE TABLE Moderation (
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE,
     FOREIGN KEY (idModerationType) REFERENCES ModerationType(idModerationType) ON DELETE CASCADE,
-    UNIQUE (idUser, idPublication, idModerationType)
+    UNIQUE (idUser, idPublication, idModerationType), -- Llave única para evitar duplicados
+    PRIMARY KEY (idUser, idPublication, idModerationType) -- Llave primaria compuesta
 );
 
 CREATE TABLE Bot (
@@ -150,7 +149,6 @@ CREATE TABLE Reply (
 );
 
 CREATE TABLE Reaction (
-    idReaction INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     idPublication INT,
     idComment INT,
@@ -159,16 +157,17 @@ CREATE TABLE Reaction (
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE,
     FOREIGN KEY (idComment) REFERENCES Comment(idComment) ON DELETE CASCADE,
-    UNIQUE (idUser, idPublication, idComment) -- Para evitar múltiples reacciones
+    UNIQUE (idUser, idPublication, idComment), -- Evita múltiples reacciones
+    PRIMARY KEY (idUser, idPublication, idComment) -- Llave primaria compuesta
 );
 
 CREATE TABLE MentionedUser (
-    idMention INT PRIMARY KEY AUTO_INCREMENT,
     idPublication INT NOT NULL,
     idMentionedUser INT NOT NULL,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE,
     FOREIGN KEY (idMentionedUser) REFERENCES User(idUser) ON DELETE CASCADE,
-    UNIQUE (idPublication, idMentionedUser)
+    UNIQUE (idPublication, idMentionedUser), -- Evita menciones duplicadas
+    PRIMARY KEY (idPublication, idMentionedUser) -- Llave primaria compuesta
 );
 
 CREATE TABLE Message (
@@ -186,7 +185,7 @@ CREATE TABLE Message (
 CREATE TABLE UserPreference (
     idUserPreference INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
-    theme BOOLEAN NOT NULL DEFAULT 0, -- 0: Tema claro, 1: Tema oscuro
+    theme ENUM ('Dark','White') DEFAULT 'Dark', -- 0: Tema claro, 1: Tema oscuro
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
 
