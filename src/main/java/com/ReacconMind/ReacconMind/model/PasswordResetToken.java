@@ -6,27 +6,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idUserPreference;
-    private int idUser;
+    private int idResetToken;
+    @ManyToOne
+    @JoinColumn(name = "idUser", nullable = false)
+    private User user; // Relación con el usuario
     private String token;
     private Date expirationDate;
     private boolean used;
-    public int getIdUserPreference() {
-        return idUserPreference;
+    
+    public User getUser() {
+        return user;
     }
-    public void setIdUserPreference(int idUserPreference) {
-        this.idUserPreference = idUserPreference;
-    }
-    public int getIdUser() {
-        return idUser;
-    }
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
     public String getToken() {
         return token;
@@ -45,6 +44,12 @@ public class PasswordResetToken {
     }
     public void setUsed(boolean used) {
         this.used = used;
+    }
+    public int getIdResetToken() {
+        return idResetToken;
+    }
+    public void setIdResetToken(int idResetToken) {
+        this.idResetToken = idResetToken;
     }
 
     

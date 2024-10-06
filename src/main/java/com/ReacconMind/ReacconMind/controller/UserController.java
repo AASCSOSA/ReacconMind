@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+
 @RestController
 @RequestMapping("/ReacconMind/users")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
@@ -48,6 +49,14 @@ public class UserController {
                 return userService.getAll();
         }
 
+        @Operation(summary = "Get all active Users", description = "Obtiene una lista de todos los usuarios activos registrados.")
+        @ApiResponse(responseCode = "200", description = "Lista de usuarios activos obtenida correctamente", content = {
+                        @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))) })
+        @GetMapping("/usersActive")
+        public List<User> getAllUserActive() {
+            return userService.getAllActive();
+        }
+        
         // Documentación para obtener un usuario por ID
         @Operation(summary = "Get a user by ID", description = "Obtiene un usuario específico por su ID de control.")
         @ApiResponses(value = {

@@ -14,6 +14,7 @@ CREATE TABLE User (
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status ENUM ('Active','Inactive') DEFAULT 'Active', 
+    theme ENUM ('Dark','Light') NOT NULL DEFAULT 'Light', -- 0: Tema claro, 1: Tema oscuro
     INDEX (email),
     INDEX (username)
 );
@@ -182,18 +183,12 @@ CREATE TABLE Message (
     CHECK (idSender <> idAddressee) -- Asegura que no se envíen mensajes a sí mismos
 );
 
-CREATE TABLE UserPreference (
-    idUserPreference INT PRIMARY KEY AUTO_INCREMENT,
-    idUser INT NOT NULL,
-    theme ENUM ('Dark','White') DEFAULT 'Dark', -- 0: Tema claro, 1: Tema oscuro
-    FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
-);
 
 CREATE TABLE PasswordResetToken (
     idResetToken INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     token VARCHAR(255) NOT NULL UNIQUE,
-    expirationDate TIMESTAMP NOT NULL,
+    expirationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     used BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );

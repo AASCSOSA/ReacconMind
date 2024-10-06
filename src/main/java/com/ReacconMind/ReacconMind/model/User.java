@@ -28,8 +28,13 @@ public class User {
     private String userName;
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
-    private boolean status;
 
+    @Enumerated(EnumType.STRING)
+    private StatusType status = StatusType.Active;
+
+    @Enumerated(EnumType.STRING)
+    private ThemeType theme = ThemeType.Light;
+    
 
     public int getIdUser() {
         return idUser;
@@ -103,12 +108,22 @@ public class User {
         this.typeAuth = typeAuth;
     }
 
-    public boolean isStatus() {
+    public StatusType getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(StatusType status) {
         this.status = status;
     }
+
+    public ThemeType getTheme() {
+        return theme;
+    }
+
+    public void setTheme(ThemeType theme) {
+        this.theme = theme;
+    }
+
+    
 
 }
