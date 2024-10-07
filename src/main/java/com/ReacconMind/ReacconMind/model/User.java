@@ -1,8 +1,8 @@
 package com.ReacconMind.ReacconMind.model;
 
-import java.util.Date;
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,8 +26,15 @@ public class User {
     private String biography;
 
     private String userName;
+    @Enumerated(EnumType.STRING)
+    private AuthType typeAuth = AuthType.Email;
 
-    private Date dateCreationProfile;
+    @Enumerated(EnumType.STRING)
+    private StatusType status = StatusType.Active;
+
+    @Enumerated(EnumType.STRING)
+    private ThemeType theme = ThemeType.Light;
+    
 
     public int getIdUser() {
         return idUser;
@@ -93,12 +100,30 @@ public class User {
         this.userName = userName;
     }
 
-    public Date getDateCreationProfile() {
-        return dateCreationProfile;
+    public AuthType getTypeAuth() {
+        return typeAuth;
     }
 
-    public void setDateCreationProfile(Date dateCreationProfile) {
-        this.dateCreationProfile = dateCreationProfile;
+    public void setTypeAuth(AuthType typeAuth) {
+        this.typeAuth = typeAuth;
     }
+
+    public StatusType getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusType status) {
+        this.status = status;
+    }
+
+    public ThemeType getTheme() {
+        return theme;
+    }
+
+    public void setTheme(ThemeType theme) {
+        this.theme = theme;
+    }
+
+    
 
 }

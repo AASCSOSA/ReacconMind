@@ -23,3 +23,5 @@ HELP.md
 src/main/resources/application.properties
 # Permite el archivo de ejemplo
 !src/main/resources/application.properties.example
+# Ignora el archivo reparto de la base de datos
+Bd/Reparto.txt
