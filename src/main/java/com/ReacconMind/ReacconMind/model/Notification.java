@@ -2,45 +2,54 @@ package com.ReacconMind.ReacconMind.model;
 
 import java.sql.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_notification;
-    private TypeNotification type_notification;
+    private int idNotification;
+    @ManyToOne
+    @JoinColumn(name = "idUser", nullable = false)
+    private User idUser; // Relación con el usuario
+    @Enumerated(EnumType.STRING)
+    private TypeNotification typeNotification;
     private String content;
-    private State state;
+    @Enumerated(EnumType.STRING)
+    private State state = State.Unread;
+    @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date dateNotification;
 
-    
-    public Notification(int id_notification, TypeNotification type_notification, String content, State state,
-            Date dateNotification) {
-        this.id_notification = id_notification;
-        this.type_notification = type_notification;
-        this.content = content;
-        this.state = state;
-        this.dateNotification = dateNotification;
+    public int getIdNotification() {
+        return idNotification;
     }
 
-    public int getId_notification() {
-        return id_notification;
+    public void setIdNotification(int idNotification) {
+        this.idNotification = idNotification;
     }
 
-    public void setId_notification(int id_notification) {
-        this.id_notification = id_notification;
+    public User getIdUser() {
+        return idUser;
     }
 
-    public TypeNotification getType_notification() {
-        return type_notification;
+    public void setIdUser(User idUser) {
+        this.idUser = idUser;
     }
 
-    public void setType_notification(TypeNotification type_notification) {
-        this.type_notification = type_notification;
+    public TypeNotification getTypeNotification() {
+        return typeNotification;
+    }
+
+    public void setTypeNotification(TypeNotification typeNotification) {
+        this.typeNotification = typeNotification;
     }
 
     public String getContent() {
@@ -55,8 +64,8 @@ public class Notification {
         return state;
     }
 
-    public void setState(State estate) {
-        this.state = estate;
+    public void setState(State state) {
+        this.state = state;
     }
 
     public Date getDateNotification() {
@@ -67,21 +76,21 @@ public class Notification {
         this.dateNotification = dateNotification;
     }
 
-
     @Override
-    public String toString(){
-        return id_notification + " :: " + type_notification + " :: " + content + " :: " + state + " :: " + dateNotification;
+    public String toString() {
+        return idNotification + " :: " + typeNotification + " :: " + content + " :: " + state + " :: "
+                + dateNotification;
     }
 
     public enum TypeNotification {
-        MESSAGE,
-        LIKE,
-        FOLLOW,
-        COMMENT,
+        Message,
+        Like,
+        Follow,
+        Comment,
     }
 
     public enum State {
-        READ,
-        UNREAD
+        Read,
+        Unread
     }
 }
