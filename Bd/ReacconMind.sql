@@ -4,7 +4,7 @@ USE reacconMind;
 
 CREATE TABLE User (
     idUser INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(25) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255), -- Contraseña hasheada, puede ser NULL si el usuario se autentica con Google
     imageProfile VARCHAR(2083), -- URL para la imagen de perfil
@@ -18,7 +18,7 @@ CREATE TABLE User (
     INDEX (email),
     INDEX (username)
 );
-
+SELECT * FROM `User` u ;
 CREATE TABLE Publication (
     idPublication INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT,
@@ -37,7 +37,7 @@ CREATE TABLE Image (
 );
 
 CREATE TABLE Multimedia (
-    id_multimedia INT PRIMARY KEY AUTO_INCREMENT,
+    idMultimedia INT PRIMARY KEY AUTO_INCREMENT,
     url VARCHAR(2083) NOT NULL,
     type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
     uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -188,11 +188,12 @@ CREATE TABLE PasswordResetToken (
     idResetToken INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     token VARCHAR(255) NOT NULL UNIQUE,
-    expirationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expirationDate TIMESTAMP NOT NULL DbioEFAULT (DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 20 MINUTE)),
     used BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
-
+SELECT * from GoogleAuth ga ;
+SELECT * FROM `User` u ;
 CREATE TABLE GoogleAuth (
     idGoogleAuth INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,

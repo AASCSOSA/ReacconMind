@@ -9,5 +9,6 @@ import com.ReacconMind.ReacconMind.model.PasswordResetToken;
 
 @Repository
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Integer> {
-    Optional<PasswordResetToken> findByToken(String token);
+  Optional<PasswordResetToken> findByToken(String token);
+
 }

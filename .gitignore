@@ -24,3 +24,8 @@ src/main/resources/application.properties
 !src/main/resources/application.properties.example
 # Ignora el archivo reparto de la base de datos
 Bd/Reparto.txt
+
+.classpath
+.project
+.settings/
+
