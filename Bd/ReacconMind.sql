@@ -1,4 +1,3 @@
--- Crear base de datos
 CREATE DATABASE reacconMind;
 USE reacconMind;
 
@@ -13,7 +12,7 @@ CREATE TABLE User (
     username VARCHAR(50) NOT NULL UNIQUE,
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status ENUM ('Active','Inactive') DEFAULT 'Active', 
+    status ENUM ('Active','Inactive') DEFAULT 'Active',
     theme ENUM ('Dark','Light') NOT NULL DEFAULT 'Light', -- 0: Tema claro, 1: Tema oscuro
     INDEX (email),
     INDEX (username)
@@ -192,9 +191,7 @@ CREATE TABLE PasswordResetToken (
     used BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
-SELECT * FROM PasswordResetToken prt ;
-SELECT * FROM  GoogleAuth ga ;
-SELECT * FROM `User` u ;
+
 CREATE TABLE GoogleAuth (
     idGoogleAuth INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
