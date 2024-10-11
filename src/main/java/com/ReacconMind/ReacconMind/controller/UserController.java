@@ -1,5 +1,6 @@
 package com.ReacconMind.ReacconMind.controller;
 
+import com.ReacconMind.ReacconMind.model.StatusType;
 import com.ReacconMind.ReacconMind.model.User;
 import com.ReacconMind.ReacconMind.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -199,5 +200,50 @@ public class UserController {
         user.setIdUser(auxUser.getIdUser());
         userService.save(user);
         return new ResponseEntity<String>("Updated record", HttpStatus.OK);
+    }
+
+    @Operation(
+        summary = "Update user status",
+        description = "Update the status of an existing user based on their ID."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "User status updated successfully",
+                content = {
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = String.class)
+                    ),
+                }
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "User not found",
+                content = @Content
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Invalid status data",
+                content = @Content
+            ),
+        }
+    )
+    @PutMapping("/updateStatus/{idUser}")
+    public ResponseEntity<?> updateUserStatus(
+        @RequestBody StatusType status,
+        @PathVariable Integer idUser
+    ) {
+        User user = userService.getByIdUser(idUser);
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        user.setStatus(status);
+        userService.save(user);
+        return new ResponseEntity<>(
+            "User status updated successfully",
+            HttpStatus.OK
+        );
     }
 }
