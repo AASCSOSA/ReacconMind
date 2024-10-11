@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
+
     @Autowired
     private JavaMailSender mailSender;
 
@@ -15,7 +16,7 @@ public class EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
-        message.setFrom("sosacruzalainantonio@gmail.com"); // Tu correo de Gmail
+        message.setFrom("sosacruzalainantonio@gmail.com");
         mailSender.send(message);
     }
 }

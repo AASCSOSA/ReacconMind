@@ -7,42 +7,40 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-/**
- * 
- */
 @Entity
 public class GoogleAuth {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int idGoogleAuth;
-  @ManyToOne
-  @JoinColumn(name = "idUser", nullable = false)
-  private User user;
 
-  private String googleId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idGoogleAuth;
 
-  public int getIdGoogleAuth() {
-    return idGoogleAuth;
-  }
+    @ManyToOne
+    @JoinColumn(name = "idUser", nullable = false)
+    private User user;
 
-  public void setIdGoogleAuth(int idGoogleAuth) {
-    this.idGoogleAuth = idGoogleAuth;
-  }
+    private String googleId;
 
-  public User getUser() {
-    return user;
-  }
+    public int getIdGoogleAuth() {
+        return idGoogleAuth;
+    }
 
-  public void setUser(User user) {
-    this.user = user;
-  }
+    public void setIdGoogleAuth(int idGoogleAuth) {
+        this.idGoogleAuth = idGoogleAuth;
+    }
 
-  public String getGoogleId() {
-    return googleId;
-  }
+    public User getUser() {
+        return user;
+    }
 
-  public void setGoogleId(String googleId) {
-    this.googleId = googleId;
-  }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
 }

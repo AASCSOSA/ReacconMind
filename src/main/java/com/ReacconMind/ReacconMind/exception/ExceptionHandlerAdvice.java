@@ -1,59 +1,62 @@
 package com.ReacconMind.ReacconMind.exception;
 
 import java.util.NoSuchElementException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<?> handleException(NoSuchElementException e) {
-        //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested item is not registered");
-        return new ResponseEntity<>(
-            "The requested item is not registered",
-            HttpStatus.NOT_FOUND
-        );
-    }
+    private static final Logger logger = LoggerFactory.getLogger(
+        ExceptionHandlerAdvice.class
+    );
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleException(IllegalArgumentException e) {
-        //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested item is not registered");
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<String> handleNoSuchElementException(
+        NoSuchElementException e
+    ) {
+        logger.error("No such element: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            "The requested item is not registered"
+        );
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> handleException(RuntimeException e) {
-        return new ResponseEntity<>(
-            e.getMessage(),
-            HttpStatus.INTERNAL_SERVER_ERROR
-        );
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleException(Exception e) {
-        return new ResponseEntity<>(
-            "An unexpected error occurred",
-            HttpStatus.INTERNAL_SERVER_ERROR
+    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            e.getMessage()
         );
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<?> handleException(NullPointerException e) {
-        return new ResponseEntity<>(
-            "Null pointer exception occurred",
-            HttpStatus.INTERNAL_SERVER_ERROR
+    public ResponseEntity<String> handleNullPointerException(
+        NullPointerException e
+    ) {
+        logger.error("Null pointer exception: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            "A null pointer exception occurred"
         );
     }
 
     @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
-    public ResponseEntity<?> handleException(ArrayIndexOutOfBoundsException e) {
-        return new ResponseEntity<>(
-            "Array index out of bounds",
-            HttpStatus.INTERNAL_SERVER_ERROR
+    public ResponseEntity<String> handleArrayIndexOutOfBoundsException(
+        ArrayIndexOutOfBoundsException e
+    ) {
+        logger.error("Array index out of bounds: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            "Array index out of bounds"
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception e) {
+        logger.error("Unexpected error occurred: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            "An unexpected error occurred"
         );
     }
 }

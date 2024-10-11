@@ -1,5 +1,6 @@
 package com.ReacconMind.ReacconMind.controller;
 
+import com.ReacconMind.ReacconMind.model.User;
 import com.ReacconMind.ReacconMind.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,73 +25,179 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.ReacconMind.ReacconMind.model.User;
 
 @RestController
-@PreAuthorize("hasRole('USER')") // o el rol correspondiente que se necesite
+@PreAuthorize("hasRole('USER')")
 @RequestMapping("/ReacconMind/users")
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
-    RequestMethod.PUT })
+@CrossOrigin(
+    origins = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.DELETE,
+        RequestMethod.PUT,
+    }
+)
 @Configuration
-@OpenAPIDefinition(info = @Info(title = "ReacconMind API", description = "API para la gestión de usuarios en la aplicación ReacconMind", version = "1.0"))
+@OpenAPIDefinition(
+    info = @Info(
+        title = "ReacconMind API",
+        description = "API for user management in the ReacconMind application",
+        version = "1.0"
+    )
+)
 public class UserController {
 
-  @Autowired
-  private UserService userService;
+    @Autowired
+    private UserService userService;
 
-  @Operation(summary = "Get all Users", description = "Obtiene una lista de todos los usuarios registrados.")
-  @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida correctamente", content = {
-      @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))) })
-  @GetMapping
-  public List<User> getAll() {
-    return userService.getAll();
-  }
+    @Operation(
+        summary = "Get all Users",
+        description = "Get a list of all registered users."
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "List of users obtained successfully",
+        content = {
+            @Content(
+                mediaType = "application/json",
+                array = @ArraySchema(
+                    schema = @Schema(implementation = User.class)
+                )
+            ),
+        }
+    )
+    @GetMapping
+    public List<User> getAll() {
+        return userService.getAll();
+    }
 
-  @Operation(summary = "Get all active Users", description = "Obtiene una lista de todos los usuarios activos registrados.")
-  @ApiResponse(responseCode = "200", description = "Lista de usuarios activos obtenida correctamente", content = {
-      @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))) })
-  @GetMapping("/usersActive")
-  public List<User> getAllUserActive() {
-    return userService.getAllActive();
-  }
+    @Operation(
+        summary = "Get all active Users",
+        description = "Get a list of all registered active users."
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "List of active users obtained successfully",
+        content = {
+            @Content(
+                mediaType = "application/json",
+                array = @ArraySchema(
+                    schema = @Schema(implementation = User.class)
+                )
+            ),
+        }
+    )
+    @GetMapping("/usersActive")
+    public List<User> getAllUserActive() {
+        return userService.getAllActive();
+    }
 
-  @Operation(summary = "Get a user by ID", description = "Obtiene un usuario específico por su ID de control.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Usuario encontrado", content = {
-          @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
-      @ApiResponse(responseCode = "400", description = "ID de usuario inválido", content = @Content),
-      @ApiResponse(responseCode = "401", description = "Fallo de autenticación", content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content) })
-  @GetMapping("/{idUser}")
-  public ResponseEntity<?> getByIdUser(@PathVariable Integer idUser) {
-    User user = userService.getByIdUser(idUser);
-    return new ResponseEntity<User>(user, HttpStatus.OK);
-  }
+    @Operation(
+        summary = "Get a user by ID",
+        description = "Get a specific user by their control ID."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "User found",
+                content = {
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = User.class)
+                    ),
+                }
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Invalid user ID",
+                content = @Content
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "Authentication failure",
+                content = @Content(schema = @Schema(hidden = true))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "User not found",
+                content = @Content
+            ),
+        }
+    )
+    @GetMapping("/{idUser}")
+    public ResponseEntity<?> getByIdUser(@PathVariable Integer idUser) {
+        User user = userService.getByIdUser(idUser);
+        return ResponseEntity.ok(user);
+    }
 
-  @Operation(summary = "Add a new User", description = "Agrega un nuevo usuario al sistema.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Usuario agregado exitosamente", content = {
-          @Content(mediaType = "application/json", schema = @Schema(implementation = String.class)) }),
-      @ApiResponse(responseCode = "400", description = "Datos de usuario inválidos", content = @Content),
-  })
-  @PreAuthorize("permitAll()")
-  @PostMapping
-  public ResponseEntity<String> addUser(@RequestBody User user) {
-    userService.save(user);
-    return ResponseEntity.ok("User added successfully");
-  }
+    @Operation(
+        summary = "Add a new User",
+        description = "Add a new user to the system."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "User added successfully",
+                content = {
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = String.class)
+                    ),
+                }
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Invalid user data",
+                content = @Content
+            ),
+        }
+    )
+    @PreAuthorize("permitAll()")
+    @PostMapping
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+        userService.save(user);
+        return ResponseEntity.ok("User added successfully");
+    }
 
-  @Operation(summary = "Update an existing User", description = "Actualiza los datos de un usuario existente basado en su ID.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Update successfully", content = {
-          @Content(mediaType = "application/json", schema = @Schema(implementation = String.class)) }),
-      @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
-      @ApiResponse(responseCode = "400", description = "Datos de usuario inválidos", content = @Content) })
-  @PutMapping("/update/{idUser}")
-  public ResponseEntity<?> update(@RequestBody User user, @PathVariable Integer idUser) {
-    User auxUser = userService.getByIdUser(idUser);
-    user.setIdUser(auxUser.getIdUser());
-    userService.save(user);
-    return new ResponseEntity<String>("Updated record", HttpStatus.OK);
-  }
+    @Operation(
+        summary = "Update an existing User",
+        description = "Update the data of an existing user based on their ID."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Update successfully",
+                content = {
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = String.class)
+                    ),
+                }
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "User not found",
+                content = @Content
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Invalid user data",
+                content = @Content
+            ),
+        }
+    )
+    @PutMapping("/update/{idUser}")
+    public ResponseEntity<?> update(
+        @RequestBody User user,
+        @PathVariable Integer idUser
+    ) {
+        User auxUser = userService.getByIdUser(idUser);
+        user.setIdUser(auxUser.getIdUser());
+        userService.save(user);
+        return new ResponseEntity<String>("Updated record", HttpStatus.OK);
+    }
 }
