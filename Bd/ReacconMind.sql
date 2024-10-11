@@ -18,7 +18,7 @@ CREATE TABLE User (
     INDEX (email),
     INDEX (username)
 );
-SELECT * FROM `User` u ;
+
 CREATE TABLE Publication (
     idPublication INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT,
@@ -192,7 +192,8 @@ CREATE TABLE PasswordResetToken (
     used BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
-SELECT * from GoogleAuth ga ;
+SELECT * FROM PasswordResetToken prt ;
+SELECT * FROM  GoogleAuth ga ;
 SELECT * FROM `User` u ;
 CREATE TABLE GoogleAuth (
     idGoogleAuth INT PRIMARY KEY AUTO_INCREMENT,

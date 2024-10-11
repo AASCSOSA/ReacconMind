@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ReacconMind.ReacconMind.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-  User findByEmail(String email); // Este método está bien
+  User findByEmail(String email);
 
-  User findByUserName(String userName); // Este método está bien
+  User findByUserName(String userName);
 
   Optional<User> findUserByEmail(String email);
 }
