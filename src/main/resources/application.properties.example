@@ -17,12 +17,11 @@ springdoc.swagger-ui.enabled=true
 springdoc.swagger-ui.path=/doc/swagger.html
 springdoc.packagesToScan=com.ReacconMind.ReacconMind
 
-# Configuración de correo para enviar correos con Gmail
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
 spring.mail.username=sosacruzalainantonio@gmail.com
 spring.mail.password=mqqe yaxdosit kmnz
-# La contraseña de aplicación generada en Gmail #kyrw nyru jric fcyl
+
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
