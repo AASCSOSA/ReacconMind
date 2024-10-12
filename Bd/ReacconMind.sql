@@ -6,9 +6,9 @@ CREATE TABLE User (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255), -- Contraseña hasheada, puede ser NULL si el usuario se autentica con Google
-    imageProfile VARCHAR(2083), -- URL para la imagen de perfil
-    imageFacade VARCHAR(2083), -- URL para la imagen de fachada
-    biography VARCHAR(50),
+    imageProfile VARCHAR(2083) NOT NULL, -- URL para la imagen de perfil
+    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada
+    biography VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUser;
@@ -26,6 +27,7 @@ public class User {
     private String biography;
 
     private String userName;
+
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
 
@@ -34,7 +36,32 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private ThemeType theme = ThemeType.Light;
-    
+
+    public User() {}
+
+    public User(
+        String name,
+        String email,
+        String password,
+        String imageProfile,
+        String imageFacade,
+        String biography,
+        String userName,
+        AuthType typeAuth,
+        StatusType status,
+        ThemeType theme
+    ) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.imageProfile = imageProfile;
+        this.imageFacade = imageFacade;
+        this.biography = biography;
+        this.userName = userName;
+        this.typeAuth = typeAuth;
+        this.status = status;
+        this.theme = theme;
+    }
 
     public int getIdUser() {
         return idUser;
@@ -123,7 +150,4 @@ public class User {
     public void setTheme(ThemeType theme) {
         this.theme = theme;
     }
-
-    
-
 }

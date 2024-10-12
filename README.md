@@ -1,8 +1,19 @@
 # ReacconMind
-ReacconMind es una red social diseñada para fomentar la comunicación libre entre personas de todas las edades y trasfondos. Ofrece una plataforma donde los usuarios pueden compartir imágenes, videos y pensamientos, promoviendo la diversidad de opiniones y el respeto por la libertad de expresión.
+ReacconMind is a social network designed to promote free communication among people of all ages and backgrounds. It offers a platform where users can share images, videos, and thoughts, promoting diversity of opinions and respect for freedom of expression.
 
-## Configuración de la Base de Datos
-Para configurar la conexión a la base de datos, copia el archivo `application.properties.example` a `application.properties` y edítalo con tus credenciales reales:
+## Database Configuration
+To configure the database connection, copy the `application.properties.example` file to `application.properties` and edit it with your actual credentials:
 
-## Base de datos SQL
-La base de datos se encuentra en la carpeta `Bd`. Para utilizarla, impórtala en tu sistema de gestión de bases de datos (SGBD) favorito, asegurándote de que el motor sea **MySQL**.
+## SQL Database
+The database is located in the `Bd` folder. To use it, import it into your favorite database management system (DBMS), making sure the engine is **MySQL**.
+## Default User
+To log in with an email, there is a default user created for this application:
+
+Email:
+```bash
+professor@example.com
+```
+Password:
+```bash
+mario
+```

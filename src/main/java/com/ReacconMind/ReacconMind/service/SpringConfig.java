@@ -26,7 +26,6 @@ public class SpringConfig {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
@@ -34,7 +33,6 @@ public class SpringConfig {
             .csrf()
             .disable()
             .authorizeHttpRequests(registry -> {
-                // Permite acceso a las rutas de Swagger y otras especificadas
                 registry
                     .requestMatchers(
                         "/swagger-ui/**",
@@ -61,31 +59,13 @@ public class SpringConfig {
                     .failureUrl("/login?error=true")
             )
             .requiresChannel(channel -> channel.anyRequest().requiresInsecure()
-            ); // Opción adicional para pruebas
+            );
 
-        return http.build(); // Asegúrate de construir el objeto HttpSecurity
-    }
-
-    @Autowired
-    @Profile("!test") // Deshabilitar esta configuración en el perfil de prueba
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder);
-    }
-    */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-        throws Exception {
-        http
-            .csrf()
-            .disable()
-            .authorizeHttpRequests(registry -> registry.anyRequest().permitAll()
-            ); // Permitir acceso a todas las solicitudes
         return http.build();
     }
 
     @Autowired
+    @Profile("!test")
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .userDetailsService(userDetailsService)

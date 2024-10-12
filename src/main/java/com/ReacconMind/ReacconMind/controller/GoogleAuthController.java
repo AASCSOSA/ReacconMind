@@ -10,12 +10,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.security.Principal;
 import java.util.Optional;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/api")
@@ -68,7 +68,7 @@ public class GoogleAuthController {
             ),
         }
     )
-    public ResponseEntity<?> googleCallback(
+    public ModelAndView googleCallback(
         @AuthenticationPrincipal OAuth2User principal
     ) {
         String name = principal.getAttribute("name");
@@ -84,6 +84,9 @@ public class GoogleAuthController {
 
         if (existingUser.isPresent()) {
             user = existingUser.get();
+            return new ModelAndView(
+                "redirect:http://localhost:8080/doc/swagger-ui/index.html"
+            );
         } else {
             user = new User();
             user.setName(name);
@@ -95,12 +98,13 @@ public class GoogleAuthController {
             user.setUserName(userName);
             userService.save(user);
         }
+
         Optional<GoogleAuth> existingGoogleAuth =
             googleAuthService.findByGoogleId(googleId);
 
         if (existingGoogleAuth.isPresent()) {
-            return ResponseEntity.status(409).body(
-                "The Google ID is already registered."
+            return new ModelAndView(
+                "redirect:http://localhost:8080/doc/swagger-ui/index.html"
             );
         }
 
@@ -110,6 +114,8 @@ public class GoogleAuthController {
 
         googleAuthService.save(googleAuth);
 
-        return ResponseEntity.ok("User successfully registered with Google");
+        return new ModelAndView(
+            "redirect:http://localhost:8080/doc/swagger-ui/index.html"
+        );
     }
 }
