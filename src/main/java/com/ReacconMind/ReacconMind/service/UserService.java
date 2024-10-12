@@ -55,18 +55,15 @@ public class UserService {
         return userRepository.findById(idUser).get();
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
-     public User findByEmail(String email) {
-         return userRepository.findByEmail(email);
-     }
-
-     public User findByUserName(String userName) {
-         return userRepository.findByUserName(userName);
-     }
+    public User findByUserName(String userName) {
+        return userRepository.findByUserName(userName);
+    }
 
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
 }
-
- }
