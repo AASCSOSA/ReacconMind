@@ -1,7 +1,5 @@
 package com.ReacconMind.ReacconMind.model;
 
-import com.ReacconMind.ReacconMind.model.Comment;
-import com.ReacconMind.ReacconMind.model.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

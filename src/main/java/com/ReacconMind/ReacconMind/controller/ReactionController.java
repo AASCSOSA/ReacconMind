@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("reactions")
+@RequestMapping("/ReacconMind/reactions")
 @CrossOrigin(origins = "*")
 public class ReactionController {
 
