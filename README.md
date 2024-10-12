@@ -9,5 +9,11 @@ The database is located in the `Bd` folder. To use it, import it into your favor
 ## Default User
 To log in with an email, there is a default user created for this application:
 
-Email: ```bash professor@example.com ```
-Password: ```bash mario ```
+Email: 
+```bash 
+professor@example.com 
+```
+Password: 
+```bash 
+mario 
+```
