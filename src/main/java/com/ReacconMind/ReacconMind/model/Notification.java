@@ -1,7 +1,5 @@
 package com.ReacconMind.ReacconMind.model;
 
-import java.sql.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,21 +9,33 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.sql.Date;
 
 @Entity
 public class Notification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idNotification;
+
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)
-    private User idUser; // Relación con el usuario
+    private User idUser;
+
     @Enumerated(EnumType.STRING)
     private TypeNotification typeNotification;
+
     private String content;
+
     @Enumerated(EnumType.STRING)
     private State state = State.Unread;
-    @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+
+    @Column(
+        updatable = false,
+        insertable = false,
+        nullable = false,
+        columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    )
     private Date dateNotification;
 
     public int getIdNotification() {
@@ -78,8 +88,17 @@ public class Notification {
 
     @Override
     public String toString() {
-        return idNotification + " :: " + typeNotification + " :: " + content + " :: " + state + " :: "
-                + dateNotification;
+        return (
+            idNotification +
+            " :: " +
+            typeNotification +
+            " :: " +
+            content +
+            " :: " +
+            state +
+            " :: " +
+            dateNotification
+        );
     }
 
     public enum TypeNotification {
@@ -91,6 +110,6 @@ public class Notification {
 
     public enum State {
         Read,
-        Unread
+        Unread,
     }
 }

@@ -105,7 +105,7 @@ CREATE TABLE Bot (
     theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
     idMultimedia INT,
     shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
+    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(idMultimedia) ON DELETE SET NULL
 );
 
 CREATE TABLE UsuarioBot (
@@ -122,8 +122,8 @@ CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     typeNotification ENUM('Message', 'Like', 'Follow', 'Comment') NOT NULL,
-    content VARCHAR(50),
-    estate ENUM('Read', 'Unread') NOT NULL,
+    content VARCHAR(150) NOT NULL,
+    state ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
@@ -187,7 +187,7 @@ CREATE TABLE PasswordResetToken (
     idResetToken INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     token VARCHAR(255) NOT NULL UNIQUE,
-    expirationDate TIMESTAMP NOT NULL DbioEFAULT (DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 20 MINUTE)),
+    expirationDate TIMESTAMP NOT NULL DEFAULT (DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 20 MINUTE)),
     used BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
