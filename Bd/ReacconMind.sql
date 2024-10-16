@@ -1,19 +1,19 @@
--- Crear base de datos
 CREATE DATABASE reacconMind;
 USE reacconMind;
 
 CREATE TABLE User (
     idUser INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(25) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255), -- Contraseña hasheada, puede ser NULL si el usuario se autentica con Google
-    imageProfile VARCHAR(2083), -- URL para la imagen de perfil
-    imageFacade VARCHAR(2083), -- URL para la imagen de fachada
-    biography VARCHAR(50),
+    imageProfile VARCHAR(2083) NOT NULL, -- URL para la imagen de perfil
+    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada
+    biography VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status ENUM ('Active','Inactive') DEFAULT 'Active', 
+    status ENUM ('Active','Inactive') DEFAULT 'Active',
+    theme ENUM ('Dark','Light') NOT NULL DEFAULT 'Light', -- 0: Tema claro, 1: Tema oscuro
     INDEX (email),
     INDEX (username)
 );
@@ -36,7 +36,7 @@ CREATE TABLE Image (
 );
 
 CREATE TABLE Multimedia (
-    id_multimedia INT PRIMARY KEY AUTO_INCREMENT,
+    idMultimedia INT PRIMARY KEY AUTO_INCREMENT,
     url VARCHAR(2083) NOT NULL,
     type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
     uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -105,7 +105,7 @@ CREATE TABLE Bot (
     theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
     idMultimedia INT,
     shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
+    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(idMultimedia) ON DELETE SET NULL
 );
 
 CREATE TABLE UsuarioBot (
@@ -122,8 +122,8 @@ CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     typeNotification ENUM('Message', 'Like', 'Follow', 'Comment') NOT NULL,
-    content VARCHAR(50),
-    estate ENUM('Read', 'Unread') NOT NULL,
+    content VARCHAR(150) NOT NULL,
+    state ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
@@ -182,18 +182,12 @@ CREATE TABLE Message (
     CHECK (idSender <> idAddressee) -- Asegura que no se envíen mensajes a sí mismos
 );
 
-CREATE TABLE UserPreference (
-    idUserPreference INT PRIMARY KEY AUTO_INCREMENT,
-    idUser INT NOT NULL,
-    theme ENUM ('Dark','White') DEFAULT 'Dark', -- 0: Tema claro, 1: Tema oscuro
-    FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
-);
 
 CREATE TABLE PasswordResetToken (
     idResetToken INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     token VARCHAR(255) NOT NULL UNIQUE,
-    expirationDate TIMESTAMP NOT NULL,
+    expirationDate TIMESTAMP NOT NULL DEFAULT (DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 20 MINUTE)),
     used BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
