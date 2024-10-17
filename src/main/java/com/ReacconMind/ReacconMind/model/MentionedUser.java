@@ -1,34 +1,50 @@
 package com.ReacconMind.ReacconMind.model;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
+
+
 
 @Entity
-@Table(name = "MentionedUser")
-@IdClass(MentionedUser.class)
-public class MentionedUser implements Serializable {
+@Table(
+        name = "mentionedUser",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"idPublication", "idMentionedUser"}) // Asegura unicidad
+)
+@IdClass(MentionedUserId.class) // Usar la clase de ID compuesta
+public class MentionedUser {
 
     @Id
+    @Column(name = "idPublication", nullable = false)
+    private int idPublication;
+
+    @Id
+    @Column(name = "idMentionedUser", nullable = false)
+    private int idMentionedUser;
+
     @ManyToOne
-    @JoinColumn(name = "idPublication", nullable = false)
+    @JoinColumn(name = "idPublication", insertable = false, updatable = false)
     private Publication publication;
 
-    @Id
     @ManyToOne
-    @JoinColumn(name = "idMentionedUser", nullable = false)
+    @JoinColumn(name = "idMentionedUser", insertable = false, updatable = false)
     private User mentionedUser;
 
-    // Constructor por defecto
-    public MentionedUser() {}
-
-    // Constructor con parámetros
-    public MentionedUser(Publication publication, User mentionedUser) {
-        this.publication = publication;
-        this.mentionedUser = mentionedUser;
+    // Getters y Setters
+    public int getIdPublication() {
+        return idPublication;
     }
 
-    // Getters y Setters
+    public void setIdPublication(int idPublication) {
+        this.idPublication = idPublication;
+    }
+
+    public int getIdMentionedUser() {
+        return idMentionedUser;
+    }
+
+    public void setIdMentionedUser(int idMentionedUser) {
+        this.idMentionedUser = idMentionedUser;
+    }
+
     public Publication getPublication() {
         return publication;
     }
@@ -43,19 +59,5 @@ public class MentionedUser implements Serializable {
 
     public void setMentionedUser(User mentionedUser) {
         this.mentionedUser = mentionedUser;
-    }
-
-    // Métodos hashCode y equals para manejar la llave compuesta
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MentionedUser that = (MentionedUser) o;
-        return Objects.equals(publication, that.publication) && Objects.equals(mentionedUser, that.mentionedUser);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(publication, mentionedUser);
     }
 }

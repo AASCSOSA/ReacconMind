@@ -4,47 +4,49 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class MentionedUserId implements Serializable {
-
-    private int publication;
-    private int mentionedUser;
+    private int idPublication; // Cambiado para que coincida con MentionedUser
+    private int idMentionedUser; // Cambiado para que coincida con MentionedUser
 
     // Constructor por defecto
     public MentionedUserId() {}
 
     // Constructor con parámetros
-    public MentionedUserId(int publication, int mentionedUser) {
-        this.publication = publication;
-        this.mentionedUser = mentionedUser;
+    public MentionedUserId(int idPublication, int idMentionedUser) {
+        this.idPublication = idPublication;
+        this.idMentionedUser = idMentionedUser;
     }
 
-    // Getters y Setters
-    public int getPublication() {
-        return publication;
+    // Getters
+    public int getIdPublication() {
+        return idPublication;
     }
 
-    public void setPublication(int publication) {
-        this.publication = publication;
+    public int getIdMentionedUser() {
+        return idMentionedUser;
     }
 
-    public int getMentionedUser() {
-        return mentionedUser;
+    // Setters
+    public void setIdPublication(int idPublication) {
+        this.idPublication = idPublication;
     }
 
-    public void setMentionedUser(int mentionedUser) {
-        this.mentionedUser = mentionedUser;
+    public void setIdMentionedUser(int idMentionedUser) {
+        this.idMentionedUser = idMentionedUser;
     }
 
-    // Métodos hashCode y equals
+    // Métodos equals y hashCode
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MentionedUserId that = (MentionedUserId) o;
-        return publication == that.publication && mentionedUser == that.mentionedUser;
+        if (this == o)
+            return true;
+        if (!(o instanceof MentionedUserId that))
+            return false;
+        return idPublication == that.idPublication &&
+                idMentionedUser == that.idMentionedUser;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(publication, mentionedUser);
+        return Objects.hash(idPublication, idMentionedUser);
     }
 }
