@@ -1,5 +1,8 @@
 CREATE DATABASE reacconMind;
 USE reacconMind;
+-- USE sys;
+-- DROP DATABASE reacconMind;
+
 
 CREATE TABLE User (
     idUser INT PRIMARY KEY AUTO_INCREMENT,
@@ -13,10 +16,12 @@ CREATE TABLE User (
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status ENUM ('Active','Inactive') DEFAULT 'Active',
-    theme ENUM ('Dark','Light') NOT NULL DEFAULT 'Light', -- 0: Tema claro, 1: Tema oscuro
+    theme ENUM ('Dark','Light') NOT NULL DEFAULT 'Light', -- 0: Tema claro, 1: Tema oscuro,
+    themeBot ENUM('Sports', 'Technology', 'News', 'Music', 'Movies','CombinatedMedia') NOT NULL DEFAULT 'CombinatedMedia',
     INDEX (email),
     INDEX (username)
 );
+-- Tendencias nivel codigo
 
 CREATE TABLE Publication (
     idPublication INT PRIMARY KEY AUTO_INCREMENT,

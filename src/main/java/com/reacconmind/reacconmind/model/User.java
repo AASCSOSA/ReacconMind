@@ -1,5 +1,7 @@
 package com.reacconmind.reacconmind.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,7 +29,7 @@ public class User {
     private String biography;
 
     private String userName;
-
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
 
@@ -37,20 +39,16 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ThemeType theme = ThemeType.Light;
 
-    public User() {}
+    @Enumerated(EnumType.STRING)
+    private ThemeBotType themeBot = ThemeBotType.CombinatedMedia;
 
-    public User(
-        String name,
-        String email,
-        String password,
-        String imageProfile,
-        String imageFacade,
-        String biography,
-        String userName,
-        AuthType typeAuth,
-        StatusType status,
-        ThemeType theme
-    ) {
+    public User() {
+    }
+
+    public User(int idUser, String name, String email, String password, String imageProfile, String imageFacade,
+            String biography, String userName, AuthType typeAuth, StatusType status, ThemeType theme,
+            ThemeBotType themeBot) {
+        this.idUser = idUser;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -61,6 +59,7 @@ public class User {
         this.typeAuth = typeAuth;
         this.status = status;
         this.theme = theme;
+        this.themeBot = themeBot;
     }
 
     public int getIdUser() {
@@ -149,5 +148,13 @@ public class User {
 
     public void setTheme(ThemeType theme) {
         this.theme = theme;
+    }
+
+    public ThemeBotType getThemeBot() {
+        return themeBot;
+    }
+
+    public void setThemeBot(ThemeBotType themeBot) {
+        this.themeBot = themeBot;
     }
 }

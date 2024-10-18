@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.reacconmind.reacconmind.model.AuthType;
 import com.reacconmind.reacconmind.model.GoogleAuth;
+import com.reacconmind.reacconmind.model.ThemeBotType;
 import com.reacconmind.reacconmind.model.User;
 import com.reacconmind.reacconmind.service.GoogleAuthService;
 import com.reacconmind.reacconmind.service.UserService;

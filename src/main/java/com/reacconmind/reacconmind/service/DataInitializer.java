@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.reacconmind.reacconmind.model.AuthType;
 import com.reacconmind.reacconmind.model.StatusType;
+import com.reacconmind.reacconmind.model.ThemeBotType;
 import com.reacconmind.reacconmind.model.ThemeType;
 import com.reacconmind.reacconmind.model.User;
 
@@ -17,7 +18,6 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private UserService userService;
 
-
     @Override
     public void run(String... args) throws Exception {
         createDefaultUsers();
@@ -25,72 +25,71 @@ public class DataInitializer implements CommandLineRunner {
 
     private void createDefaultUsers() {
         createUser(
-            "mario.pv@teziutlan.tecnm.mx",
-            "Professor",
-            "mario",
-            "default_image_url",
-            "default_image_url",
-            "I am a professor.",
-            "professor",
-            AuthType.Email,
-            StatusType.Active,
-            ThemeType.Light
-        );
+                "mario.pv@teziutlan.tecnm.mx",
+                "Professor",
+                "mario",
+                "default_image_url",
+                "default_image_url",
+                "I am a professor.",
+                "professor",
+                AuthType.Email,
+                StatusType.Active,
+                ThemeType.Light,
+                ThemeBotType.CombinatedMedia);
 
         createUser(
-            "john.doe@example.com",
-            "John Doe",
-            "john123",
-            "default_image_url",
-            "default_image_url",
-            "Hello, I'm John.",
-            "john_doe",
-            AuthType.Email,
-            StatusType.Active,
-            ThemeType.Light
-        );
+                "john.doe@example.com",
+                "John Doe",
+                "john123",
+                "default_image_url",
+                "default_image_url",
+                "Hello, I'm John.",
+                "john_doe",
+                AuthType.Email,
+                StatusType.Active,
+                ThemeType.Light,
+                ThemeBotType.CombinatedMedia);
 
         createUser(
-            "jane.doe@example.com",
-            "Jane Doe",
-            "jane123",
-            "default_image_url",
-            "default_image_url",
-            "Hi, I'm Jane.",
-            "jane_doe",
-            AuthType.Email,
-            StatusType.Active,
-            ThemeType.Light
-        );
+                "jane.doe@example.com",
+                "Jane Doe",
+                "jane123",
+                "default_image_url",
+                "default_image_url",
+                "Hi, I'm Jane.",
+                "jane_doe",
+                AuthType.Email,
+                StatusType.Active,
+                ThemeType.Light,
+                ThemeBotType.CombinatedMedia);
     }
 
     private void createUser(
-        String email,
-        String name,
-        String plainPassword,
-        String imageProfile,
-        String imageFacade,
-        String biography,
-        String userName,
-        AuthType typeAuth,
-        StatusType status,
-        ThemeType theme
-    ) {
+            String email,
+            String name,
+            String plainPassword,
+            String imageProfile,
+            String imageFacade,
+            String biography,
+            String userName,
+            AuthType typeAuth,
+            StatusType status,
+            ThemeType theme,
+            ThemeBotType themeBot) {
         Optional<User> existingUser = userService.findUserByEmail(email);
 
         if (!existingUser.isPresent()) {
             User user = new User(
-                name,
-                email,
-                plainPassword,
-                imageProfile,
-                imageFacade,
-                biography,
-                userName,
-                typeAuth,
-                status,
-                theme
-            );
+                    0, name,
+                    email,
+                    plainPassword,
+                    imageProfile,
+                    imageFacade,
+                    biography,
+                    userName,
+                    typeAuth,
+                    status,
+                    theme, themeBot);
             userService.save(user);
         }
     }
