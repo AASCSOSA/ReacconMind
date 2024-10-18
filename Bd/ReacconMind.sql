@@ -21,14 +21,29 @@ CREATE TABLE User (
     INDEX (email),
     INDEX (username)
 );
--- Tendencias nivel codigo
 
 CREATE TABLE Publication (
     idPublication INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT,
+    idBot INT, -- Nuevo campo para relación con bot
     content VARCHAR(250),
     publicationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
+    FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE,
+    FOREIGN KEY (idBot) REFERENCES Bot(idBot) ON DELETE CASCADE, -- Relación entre publicación y bot
+    CONSTRAINT checkUserOrBot
+    CHECK (idUser IS NOT NULL OR idBot IS NOT NULL)  -- Se asegura que al menos uno esté presente
+);
+
+CREATE TABLE Follower (
+    idUserFollower INT NOT NULL,         -- El usuario que sigue
+    idFollowing INT NOT NULL,            -- El usuario o bot seguido
+    followingType ENUM('User', 'Bot') NOT NULL,  -- Indica si el seguido es un usuario o un bot
+    dateFollowing TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  
+    PRIMARY KEY (idUserFollower, idFollowing, followingType),  
+    FOREIGN KEY (idUserFollower) REFERENCES User(idUser) ON DELETE CASCADE,  -- El seguidor debe ser un usuario
+    -- Validación basada en el tipo de seguidor
+    FOREIGN KEY (idFollowing) REFERENCES User(idUser) ON DELETE CASCADE,  -- Seguir a un usuario
+    FOREIGN KEY (idFollowing) REFERENCES Bot(idBot) ON DELETE CASCADE     -- Seguir a un bot
 );
 
 CREATE TABLE Image (
@@ -41,7 +56,7 @@ CREATE TABLE Image (
 );
 
 CREATE TABLE Multimedia (
-    idMultimedia INT PRIMARY KEY AUTO_INCREMENT,
+    id_multimedia INT PRIMARY KEY AUTO_INCREMENT,
     url VARCHAR(2083) NOT NULL,
     type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
     uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -58,17 +73,6 @@ CREATE TABLE PublicationHashtag (
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE,
     FOREIGN KEY (idHashtag) REFERENCES Hashtag(idHashtag) ON DELETE CASCADE,
     PRIMARY KEY (idPublication, idHashtag) -- Llave primaria compuesta
-);
-
-CREATE TABLE Follower (
-    idUserFollowing INT NOT NULL,
-    idUserFollower INT NOT NULL,
-    dateFollowing TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idUserFollowing) REFERENCES User(idUser) ON DELETE CASCADE,
-    FOREIGN KEY (idUserFollower) REFERENCES User(idUser) ON DELETE CASCADE,
-    PRIMARY KEY (idUserFollower, idUserFollowing), -- Llave primaria compuesta
-    CONSTRAINT checkFollowerId
-    CHECK (idUserFollower <> idUserFollowing)
 );
 
 CREATE TABLE Tendency (
@@ -110,25 +114,15 @@ CREATE TABLE Bot (
     theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
     idMultimedia INT,
     shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(idMultimedia) ON DELETE SET NULL
-);
-
-CREATE TABLE UsuarioBot (
-    idUsuarioBot INT PRIMARY KEY AUTO_INCREMENT,
-    idUser INT NOT NULL,
-    idBot INT NOT NULL,
-    followingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE,
-    FOREIGN KEY (idBot) REFERENCES Bot(idBot) ON DELETE CASCADE,
-    UNIQUE (idUser, idBot)
+    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
 );
 
 CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
     typeNotification ENUM('Message', 'Like', 'Follow', 'Comment') NOT NULL,
-    content VARCHAR(150) NOT NULL,
-    state ENUM('Read', 'Unread') NOT NULL,
+    content VARCHAR(50),
+    estate ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
@@ -175,19 +169,6 @@ CREATE TABLE MentionedUser (
     PRIMARY KEY (idPublication, idMentionedUser) -- Llave primaria compuesta
 );
 
-CREATE TABLE Message (
-    idMessage INT PRIMARY KEY AUTO_INCREMENT,
-    idSender INT NOT NULL,
-    idAddressee INT NOT NULL,
-    content TEXT NOT NULL,
-    multimedia VARCHAR(255),
-    shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idSender) REFERENCES User(idUser) ON DELETE CASCADE,
-    FOREIGN KEY (idAddressee) REFERENCES User(idUser) ON DELETE CASCADE,
-    CHECK (idSender <> idAddressee) -- Asegura que no se envíen mensajes a sí mismos
-);
-
-
 CREATE TABLE PasswordResetToken (
     idResetToken INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
@@ -203,3 +184,6 @@ CREATE TABLE GoogleAuth (
     googleId VARCHAR(255) NOT NULL UNIQUE,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
+
+
+
