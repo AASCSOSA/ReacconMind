@@ -100,6 +100,7 @@ public class GoogleAuthController {
             user.setBiography(biography);
             user.setImageFacade(imageFacade);
             user.setUserName(userName);
+            user.setThemeBot(ThemeBotType.CombinatedMedia);
             userService.save(user);
         }
 

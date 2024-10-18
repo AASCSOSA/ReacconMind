@@ -22,6 +22,7 @@ CREATE TABLE User (
     INDEX (username)
 );
 
+/*Cambios Carcamo*/
 CREATE TABLE Publication (
     idPublication INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT,
@@ -111,7 +112,7 @@ CREATE TABLE Moderation (
 CREATE TABLE Bot (
     idBot INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
-    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
+    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies','CombinatedMedia') NOT NULL DEFAULT 'CombinatedMedia',
     idMultimedia INT,
     shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
@@ -120,7 +121,7 @@ CREATE TABLE Bot (
 CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
-    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment') NOT NULL,
+    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment','Moderation') NOT NULL,
     content VARCHAR(50),
     estate ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
