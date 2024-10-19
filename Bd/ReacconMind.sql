@@ -113,7 +113,7 @@ CREATE TABLE Bot (
     idBot INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies','CombinatedMedia') NOT NULL DEFAULT 'CombinatedMedia',
-    idMultimedia INT,
+    idMultimedia INT, --IdMultimedia 
     shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
 );
