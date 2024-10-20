@@ -1,3 +1,4 @@
+
 CREATE DATABASE reacconMind;
 USE reacconMind;
 -- USE sys;
@@ -22,6 +23,22 @@ CREATE TABLE User (
     INDEX (username)
 );
 
+CREATE TABLE Multimedia (
+    idMultimedia INT PRIMARY KEY AUTO_INCREMENT,
+    url VARCHAR(2083) NOT NULL,
+    type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
+    uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Bot (
+    idBot INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
+    idMultimedia INT,
+    shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(idMultimedia) ON DELETE SET NULL
+);
+
 CREATE TABLE Publication (
     idPublication INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT,
@@ -42,8 +59,8 @@ CREATE TABLE Follower (
     PRIMARY KEY (idUserFollower, idFollowing, followingType),  
     FOREIGN KEY (idUserFollower) REFERENCES User(idUser) ON DELETE CASCADE,  -- El seguidor debe ser un usuario
     -- Validación basada en el tipo de seguidor
-    FOREIGN KEY (idFollowing) REFERENCES User(idUser) ON DELETE CASCADE,  -- Seguir a un usuario
-    FOREIGN KEY (idFollowing) REFERENCES Bot(idBot) ON DELETE CASCADE     -- Seguir a un bot
+    FOREIGN KEY (idFollowing) REFERENCES User(idUser) ON DELETE CASCADE,  
+    FOREIGN KEY (idFollowing) REFERENCES Bot(idBot) ON DELETE CASCADE     
 );
 
 CREATE TABLE Image (
@@ -53,13 +70,6 @@ CREATE TABLE Image (
     uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     idPublication INT,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE
-);
-
-CREATE TABLE Multimedia (
-    id_multimedia INT PRIMARY KEY AUTO_INCREMENT,
-    url VARCHAR(2083) NOT NULL,
-    type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
-    uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Hashtag (
@@ -108,21 +118,12 @@ CREATE TABLE Moderation (
     PRIMARY KEY (idUser, idPublication, idModerationType) -- Llave primaria compuesta
 );
 
-CREATE TABLE Bot (
-    idBot INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
-    idMultimedia INT,
-    shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
-);
-
 CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
-    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment') NOT NULL,
-    content VARCHAR(50),
-    estate ENUM('Read', 'Unread') NOT NULL,
+    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment', 'Alert') NOT NULL,
+    content VARCHAR(100),
+	state ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
