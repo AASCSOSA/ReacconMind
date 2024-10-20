@@ -1,0 +1,4 @@
+azure:
+  content-moderator:
+    key: ${AZURE_MODERATOR_KEY}
+    endpoint: ${AZURE_MODERATOR_ENDPOINT}

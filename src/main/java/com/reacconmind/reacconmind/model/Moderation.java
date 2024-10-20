@@ -1,13 +1,15 @@
 package com.reacconmind.reacconmind.model;
 
+import com.reacconmind.reacconmind.enums.ModerationTypeEnum;
+
+import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import java.time.LocalDateTime;
 
 @Entity
 public class Moderation {
@@ -29,8 +31,44 @@ public class Moderation {
     @Column(name = "moderation_date", nullable = false)
     private LocalDateTime moderationDate;
 
-    // Constructor
-    public Moderation() {
-        this.moderationDate = LocalDateTime.now();
+    // Getters y setters
+    public int getIdModeration() {
+        return idModeration;
+    }
+
+    public void setIdModeration(int idModeration) {
+        this.idModeration = idModeration;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUser(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public int getIdPublication() {
+        return idPublication;
+    }
+
+    public void setIdPublication(int idPublication) {
+        this.idPublication = idPublication;
+    }
+
+    public ModerationTypeEnum getModerationType() {
+        return moderationType;
+    }
+
+    public void setModerationType(ModerationTypeEnum moderationType) {
+        this.moderationType = moderationType;
+    }
+
+    public LocalDateTime getModerationDate() {
+        return moderationDate;
+    }
+
+    public void setModerationDate(LocalDateTime moderationDate) {
+        this.moderationDate = moderationDate;
     }
 }

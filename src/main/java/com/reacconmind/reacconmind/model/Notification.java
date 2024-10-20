@@ -106,6 +106,7 @@ public class Notification {
         Like,
         Follow,
         Comment,
+        Moderation
     }
 
     public enum State {

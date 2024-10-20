@@ -124,7 +124,7 @@ CREATE TABLE Moderation (
 CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
-    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment') NOT NULL,
+    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment','Moderation') NOT NULL,
     content VARCHAR(50),
     estate ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
