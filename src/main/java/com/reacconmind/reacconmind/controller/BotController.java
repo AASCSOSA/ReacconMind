@@ -3,19 +3,12 @@ package com.reacconmind.reacconmind.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.reacconmind.reacconmind.dto.BotDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.reacconmind.reacconmind.dto.BotDTO;
 import com.reacconmind.reacconmind.model.Bot;
 import com.reacconmind.reacconmind.service.BotService;
 
@@ -23,7 +16,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -36,15 +28,22 @@ public class BotController {
     @Autowired
     private BotService service;
 
-    @Operation(summary = "Create a Bot", description = "Create a new bot.")
-    @ApiResponse(responseCode = "200", description = "Bot created correctly.", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BotDTO.class))) })
+    //@Operation(summary = "Create a Bot", description = "Create a new bot.")
+    //@ApiResponse(responseCode = "200", description = "Bot created correctly.", content = {
+      //      @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BotDTO.class))) })
+    //@PostMapping
+    //public ResponseEntity<String> addBot(@RequestBody BotDTO botDTO) {
+     //   Bot bot = service.convertToEntity(botDTO);
+      //  service.save(bot);
+        //return ResponseEntity.ok("Bot added successfully");
+    //}
+
     @PostMapping
-    public ResponseEntity<String> addBot(@RequestBody BotDTO botDTO) {
-        Bot bot = service.convertToEntity(botDTO);
+    public  ResponseEntity<String> addBot (@RequestBody Bot bot){
         service.save(bot);
         return ResponseEntity.ok("Bot added successfully");
     }
+
 
     @Operation(summary = "Get all Bots", description = "Gets a list of all registered bots.")
     @ApiResponse(responseCode = "200", description = "List of bots obtained correctly", content = {

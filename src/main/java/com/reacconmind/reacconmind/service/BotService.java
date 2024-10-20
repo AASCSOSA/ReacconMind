@@ -1,10 +1,12 @@
 package com.reacconmind.reacconmind.service;
 
 import java.util.List;
+
+import com.reacconmind.reacconmind.dto.BotDTO;
+import com.reacconmind.reacconmind.model.ThemeBotType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.reacconmind.reacconmind.dto.BotDTO;
 import com.reacconmind.reacconmind.model.Bot;
 import com.reacconmind.reacconmind.repository.BotRepository;
 
@@ -68,7 +70,7 @@ public class BotService {
         Bot bot = new Bot();
         bot.setIdBot(dto.getIdBot());
         bot.setName(dto.getName());
-        bot.setTheme(Bot.Theme.valueOf(dto.getTheme())); // Convertir String a Enum
+        bot.setTheme(ThemeBotType.valueOf(dto.getTheme())); // Convertir String a Enum
 
         // Obtener multimedia por su ID
         /*Multimedia multimedia = multimediaRepository.findById(dto.getIdMultimedia()).orElse(null);

@@ -4,7 +4,7 @@ public class BotDTO {
     private int idBot;
     private String name;
     private String theme;
-//    private int idMultimedia; 
+//    private int idMultimedia;
 
     public int getIdBot() {
         return idBot;
@@ -29,7 +29,7 @@ public class BotDTO {
     public void setTheme(String theme) {
         this.theme = theme;
     }
-/* 
+/*
     public int getIdMultimedia() {
         return idMultimedia;
     }

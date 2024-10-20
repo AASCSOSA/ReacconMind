@@ -24,7 +24,7 @@ public class Bot {
 
     @Enumerated(EnumType.STRING)
     @JsonProperty("theme")
-    private Theme theme;
+    private ThemeBotType  theme = ThemeBotType.CombinatedMedia;
 
     /*@ManyToOne
     @JoinColumn(name = "idMultimedia", nullable = true)
@@ -36,9 +36,6 @@ public class Bot {
 
     @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp shippingDate;
-
-    public Bot() {
-    }
 
     public int getIdBot() {
         return idBot;
@@ -56,22 +53,14 @@ public class Bot {
         this.name = name;
     }
 
-    public Theme getTheme() {
+    public ThemeBotType getTheme() {
         return theme;
     }
 
-    public void setTheme(Theme theme) {
+    public void setTheme(ThemeBotType theme) {
         this.theme = theme;
     }
-/* 
-    public Multimedia getMultimedia() {
-        return multimedia;
-    }
 
-    public void setMultimedia(Multimedia multimedia) {
-        this.multimedia = multimedia;
-    }
-*/
     public Timestamp getShippingDate() {
         return shippingDate;
     }
@@ -79,13 +68,4 @@ public class Bot {
     public void setShippingDate(Timestamp shippingDate) {
         this.shippingDate = shippingDate;
     }
-
-    public enum Theme {
-        Sports,
-        Technology,
-        News,
-        Music,
-        Movies
-    }
 }
-
