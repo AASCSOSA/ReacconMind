@@ -19,8 +19,8 @@ import com.reacconmind.reacconmind.model.FollowNotificationStrategy;
 import com.reacconmind.reacconmind.model.LikeNotificationStrategy;
 import com.reacconmind.reacconmind.model.MessageNotificationStrategy;
 import com.reacconmind.reacconmind.model.Notification;
-import com.reacconmind.reacconmind.model.Notification.State;
-import com.reacconmind.reacconmind.model.Notification.TypeNotification;
+import com.reacconmind.reacconmind.model.NotificationStatus;
+import com.reacconmind.reacconmind.model.TypeNotification;
 import com.reacconmind.reacconmind.repository.NotificationRepository;
 import com.reacconmind.reacconmind.repository.NotificationStrategy;
 
@@ -68,7 +68,7 @@ public class NotificationService {
         Optional<Notification> notificacionOpt = repository.findById(idNotification);
         if (notificacionOpt.isPresent()) {
             Notification notificacion = notificacionOpt.get();
-            notificacion.setState(State.Read);
+            notificacion.setState(NotificationStatus.Read);
             repository.save(notificacion);
         } else {
             throw new NoSuchElementException("Notification not found");
@@ -77,7 +77,7 @@ public class NotificationService {
 
     public List<Notification> getUnreadNotifications() {
         return repository.findAll().stream()
-                .filter(notification -> notification.getState() == State.Unread)
+                .filter(notification -> notification.getState() == NotificationStatus.Unread)
                 .collect(Collectors.toList());
     }
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.reacconmind.reacconmind.dto.NotificationDTO;
 import com.reacconmind.reacconmind.model.Notification;
-import com.reacconmind.reacconmind.model.Notification.TypeNotification;
+import com.reacconmind.reacconmind.model.TypeNotification;
 import com.reacconmind.reacconmind.model.User;
 import com.reacconmind.reacconmind.service.NotificationService;
 import com.reacconmind.reacconmind.service.UserService;

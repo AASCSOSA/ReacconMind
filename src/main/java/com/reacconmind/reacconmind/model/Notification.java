@@ -26,7 +26,7 @@ public class Notification {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    private State state = State.Unread;
+    private NotificationStatus state = NotificationStatus.Unread;
 
     public int getIdNotification() {
         return idNotification;
@@ -60,11 +60,11 @@ public class Notification {
         this.content = content;
     }
 
-    public State getState() {
+    public NotificationStatus getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(NotificationStatus state) {
         this.state = state;
     }
 
@@ -80,13 +80,5 @@ public class Notification {
             state +
             " :: " 
         );
-    }
-
-    public enum TypeNotification {
-        Message, Like, Follow, Comment, Alert
-    }
-
-    public enum State {
-        Read, Unread
     }
 }
