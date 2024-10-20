@@ -14,6 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private int idUser;
 
     private String name;
@@ -21,11 +22,12 @@ public class User {
     private String email;
 
     private String password;
+    @JsonIgnore
+    private String imageProfile = "https://firebasestorage.googleapis.com/v0/b/reacconmind-e99ee.appspot.com/o/8936051b-d9c1-42d4-a9f0-f522116700ee.png?alt=media&token=31a4ea56-5d4c-411f-b253-c191464b7a9e";
+    @JsonIgnore
+    private String imageFacade = "https://firebasestorage.googleapis.com/v0/b/reacconmind-e99ee.appspot.com/o/cd16b824-7188-473b-b991-22d09edb98e0.jpg?alt=media&token=92b3ddb6-a9e9-4f17-b10f-9675c0f72d58";
 
-    private String imageProfile;
-
-    private String imageFacade;
-
+    private String thumbnail = "https://firebasestorage.googleapis.com/v0/b/reacconmind-e99ee.appspot.com/o/thumb_8936051b-d9c1-42d4-a9f0-f522116700ee.png?alt=media&token=f19a1d1d-2769-46c8-acd4-66582ddab82e";
     private String biography;
 
     private String userName;
@@ -33,7 +35,7 @@ public class User {
     @JsonIgnore
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
-
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private StatusType status = StatusType.Active;
 
@@ -43,30 +45,19 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ThemeBotType themeBot = ThemeBotType.CombinatedMedia;
 
-    
+    public User() {
+    }
 
-    public User() {}
-
-    public User(
-        int idUser,
-        String name,
-        String email,
-        String password,
-        String imageProfile,
-        String imageFacade,
-        String biography,
-        String userName,
-        AuthType typeAuth,
-        StatusType status,
-        ThemeType theme,
-        ThemeBotType themeBot
-    ) {
+    public User(int idUser, String name, String email, String password, String imageProfile, String imageFacade,
+            String thumbnail, String biography, String userName, AuthType typeAuth, StatusType status, ThemeType theme,
+            ThemeBotType themeBot) {
         this.idUser = idUser;
         this.name = name;
         this.email = email;
         this.password = password;
         this.imageProfile = imageProfile;
         this.imageFacade = imageFacade;
+        this.thumbnail = thumbnail;
         this.biography = biography;
         this.userName = userName;
         this.typeAuth = typeAuth;
@@ -169,6 +160,14 @@ public class User {
 
     public void setThemeBot(ThemeBotType themeBot) {
         this.themeBot = themeBot;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
 }

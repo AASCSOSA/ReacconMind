@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.reacconmind.reacconmind.model.StatusType;
 import com.reacconmind.reacconmind.model.User;
+import com.reacconmind.reacconmind.service.FirebaseUser;
+import com.reacconmind.reacconmind.service.ImageService;
 import com.reacconmind.reacconmind.service.UserService;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -47,7 +50,9 @@ public class UserController {
 
         @Autowired
         private UserService userService;
-      
+        @Autowired
+        private FirebaseUser firebaseUser;
+
         @Operation(summary = "Get all Users", description = "Get a list of all registered users.")
         @ApiResponse(responseCode = "200", description = "List of users obtained successfully", content = {
                         @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))),
@@ -149,5 +154,10 @@ public class UserController {
                 return new ResponseEntity<>(
                                 "User status updated successfully",
                                 HttpStatus.OK);
+        }
+
+        @PostMapping(value = "/upload-image", consumes = { "multipart/form-data" })
+        public String upload(@RequestParam("multipartFile")MultipartFile multipartFile) {
+                return firebaseUser.upload(multipartFile);
         }
 }
