@@ -1,5 +1,7 @@
 package com.reacconmind.reacconmind.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.reacconmind.reacconmind.dto.NotificationDTO;
+import com.reacconmind.reacconmind.model.AlertNotificationStrategy;
 import com.reacconmind.reacconmind.model.CommentNotificationStrategy;
 import com.reacconmind.reacconmind.model.FollowNotificationStrategy;
 import com.reacconmind.reacconmind.model.LikeNotificationStrategy;
@@ -32,27 +36,32 @@ public class NotificationService {
     public NotificationService(LikeNotificationStrategy likeNotificationStrategy,
             MessageNotificationStrategy messageNotificationStrategy,
             FollowNotificationStrategy followNotificationStrategy,
-            CommentNotificationStrategy commentNotificationStrategy) {
+            CommentNotificationStrategy commentNotificationStrategy,
+            AlertNotificationStrategy alertNotificationStrategy) {
         strategies.put(TypeNotification.Like, likeNotificationStrategy);
         strategies.put(TypeNotification.Message, messageNotificationStrategy);
         strategies.put(TypeNotification.Follow, followNotificationStrategy);
         strategies.put(TypeNotification.Comment, commentNotificationStrategy);
+        strategies.put(TypeNotification.Alert, alertNotificationStrategy);
     }
 
-    public List<Notification> getAll() {
-        return repository.findAll();
+    public List<NotificationDTO> getAll() {
+        List<Notification> notifications = repository.findAll();
+        return notifications.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Notification getByIdNotification(Integer id_notification) {
-        return repository.findById(id_notification).get();
+    public Notification getByIdNotification(Integer idNotification) {
+        return repository.findById(idNotification).get();
     }
 
     public void save(Notification notification) {
         repository.save(notification);
     }
 
-    public void delete(Integer id_notification) {
-        repository.deleteById(id_notification);
+    public void delete(Integer idNotification) {
+        repository.deleteById(idNotification);
     }
 
     public void maskAsRead(Integer idNotification) {
@@ -62,14 +71,14 @@ public class NotificationService {
             notificacion.setState(State.Read);
             repository.save(notificacion);
         } else {
-            throw new NoSuchElementException("Notificationo not found");
+            throw new NoSuchElementException("Notification not found");
         }
     }
 
-    public List<Notification> getUnreadNotifications(){
+    public List<Notification> getUnreadNotifications() {
         return repository.findAll().stream()
-               .filter(notification -> notification.getState() == State.Unread)
-               .collect(Collectors.toList());
+                .filter(notification -> notification.getState() == State.Unread)
+                .collect(Collectors.toList());
     }
 
     public void sendNotification(Notification notification) {
@@ -82,4 +91,26 @@ public class NotificationService {
         }
 
     }
+
+    public NotificationDTO convertToDTO(Notification notification) {
+        NotificationDTO dto = new NotificationDTO();
+        dto.setIdNotification(notification.getIdNotification());
+        dto.setIdUser(notification.getIdUser());
+        dto.setTypeNotification(notification.getTypeNotification());
+        dto.setContent(notification.getContent());
+        dto.setState(notification.getState());
+        dto.setDateNotification(Date.valueOf(LocalDate.now()));
+        return dto;
+    }
+
+    public Notification convertToEntity(NotificationDTO notificationDTO) {
+        Notification notification = new Notification();
+        notification.setIdNotification(notificationDTO.getIdNotification());
+        notification.setIdUser(notificationDTO.getIdUser());
+        notification.setTypeNotification(notificationDTO.getTypeNotification());
+        notification.setContent(notificationDTO.getContent());
+        notification.setState(notificationDTO.getState());
+        return notification;
+    }
+
 }
