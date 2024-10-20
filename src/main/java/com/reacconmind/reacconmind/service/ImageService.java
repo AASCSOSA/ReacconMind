@@ -51,7 +51,7 @@ public class ImageService {
         String extension = this.getExtension(filePath);
         String contentType = extension.equals(".png") ? "image/png" : "image/jpeg";  // Define el tipo de contenido según la extensión
 
-        BlobId blobId = BlobId.of("reacconmindfirebase.appspot.com", filePath);
+        BlobId blobId = BlobId.of("pruebamario-d679e.appspot.com", filePath);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
                 .setContentType(contentType)  // Usa el tipo de contenido correcto
                 .build();

@@ -1,15 +1,14 @@
 package com.reacconmind.reacconmind.repository;
 
 import com.reacconmind.reacconmind.model.Reaction;
+import com.reacconmind.reacconmind.model.ReactionPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface ReactionRepository extends JpaRepository<Reaction, Integer> {
-
-    // Método para encontrar una reacción específica por idUser, idPublication e idComment
-    Reaction findByIdUserAndIdPublicationAndIdComment(Integer idUser, Integer idPublication, Integer idComment);
-
-    // Método para eliminar una reacción específica por idUser, idPublication e idComment
-    void deleteByIdUserAndIdPublicationAndIdComment(Integer idUser, Integer idPublication, Integer idComment);
+public interface ReactionRepository extends JpaRepository<Reaction, ReactionPK> {
+    List<Reaction> findByIdUser(int idUser);
+    List<Reaction> findByIdPublication(int idPublication);
 }

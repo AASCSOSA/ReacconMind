@@ -1,57 +1,69 @@
 package com.reacconmind.reacconmind.controller;
 
 import com.reacconmind.reacconmind.model.Reaction;
+import com.reacconmind.reacconmind.model.ReactionPK;
 import com.reacconmind.reacconmind.service.ReactionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reactions")
+@RequestMapping("reactions")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
+@Tag(name = "Reaction Management", description = "Provides methods for managing user reactions to publications and comments")
 public class ReactionController {
 
-    private final ReactionService reactionService;
-
     @Autowired
-    public ReactionController(ReactionService reactionService) {
-        this.reactionService = reactionService;
-    }
+    private ReactionService reactionService;
 
-    @PostMapping
-    public ResponseEntity<Reaction> createReaction(@RequestBody Reaction reaction) {
-        Reaction createdReaction = reactionService.createReaction(reaction);
-        return ResponseEntity.ok(createdReaction);
-    }
-
+    @Operation(summary = "Get all reactions")
+    @ApiResponse(responseCode = "200", description = "Found all reactions", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Reaction.class)))
+    })
     @GetMapping
-    public ResponseEntity<List<Reaction>> getAllReactions() {
-        List<Reaction> reactions = reactionService.getAllReactions(); // Asegúrate de que este método esté definido en ReactionService
-        return ResponseEntity.ok(reactions);
+    public List<Reaction> getAllReactions() {
+        return reactionService.getAllReactions();
     }
 
-    @GetMapping("/{idUser}/{idPublication}/{idComment}")
-    public ResponseEntity<Reaction> getReaction(
-            @PathVariable Integer idUser,
-            @PathVariable Integer idPublication,
-            @PathVariable Integer idComment) {
-        Reaction reaction = reactionService.getReaction(idUser, idPublication, idComment);
-        return reaction != null ? ResponseEntity.ok(reaction) : ResponseEntity.notFound().build();
+    @Operation(summary = "Create a new reaction")
+    @ApiResponse(responseCode = "201", description = "Reaction created successfully", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Reaction.class))
+    })
+    @PostMapping
+    public Reaction createReaction(@RequestBody Reaction reaction) {
+        return reactionService.saveReaction(reaction);
     }
 
-    @PutMapping
-    public ResponseEntity<Reaction> updateReaction(@RequestBody Reaction reaction) {
-        Reaction updatedReaction = reactionService.updateReaction(reaction);
-        return ResponseEntity.ok(updatedReaction);
+    @Operation(summary = "Get reactions by user ID")
+    @ApiResponse(responseCode = "200", description = "Found reactions for user", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Reaction.class)))
+    })
+    @GetMapping("/user/{idUser}")
+    public List<Reaction> getReactionsByUser(@PathVariable int idUser) {
+        return reactionService.getReactionsByUser(idUser);
     }
 
+    @Operation(summary = "Get reactions by publication ID")
+    @ApiResponse(responseCode = "200", description = "Found reactions for publication", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Reaction.class)))
+    })
+    @GetMapping("/publication/{idPublication}")
+    public List<Reaction> getReactionsByPublication(@PathVariable int idPublication) {
+        return reactionService.getReactionsByPublication(idPublication);
+    }
+
+    @Operation(summary = "Delete a reaction")
+    @ApiResponse(responseCode = "204", description = "Reaction deleted successfully")
     @DeleteMapping("/{idUser}/{idPublication}/{idComment}")
-    public ResponseEntity<Void> deleteReaction(
-            @PathVariable Integer idUser,
-            @PathVariable Integer idPublication,
-            @PathVariable Integer idComment) {
-        reactionService.deleteReaction(idUser, idPublication, idComment);
-        return ResponseEntity.noContent().build();
+    public void deleteReaction(@PathVariable int idUser, @PathVariable int idPublication, @PathVariable int idComment) {
+        ReactionPK reactionPK = new ReactionPK(idUser, idPublication, idComment);
+        reactionService.deleteReaction(reactionPK);
     }
 }
