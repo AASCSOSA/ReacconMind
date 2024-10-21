@@ -3,12 +3,20 @@ package com.reacconmind.reacconmind.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ReactionId implements Serializable {
+public class ReactionPK implements Serializable {
     private int idUser;
     private int idPublication;
-    private int idComment;
 
-    // Getters, Setters, equals, and hashCode
+    // Constructor vacío (requerido por JPA)
+    public ReactionPK() {}
+
+    // Constructor con parámetros
+    public ReactionPK(int idUser, int idPublication) {
+        this.idUser = idUser;
+        this.idPublication = idPublication;
+    }
+
+    // Getters y Setters
     public int getIdUser() {
         return idUser;
     }
@@ -25,26 +33,18 @@ public class ReactionId implements Serializable {
         this.idPublication = idPublication;
     }
 
-    public int getIdComment() {
-        return idComment;
-    }
-
-    public void setIdComment(int idComment) {
-        this.idComment = idComment;
-    }
-
+    // Sobrescribir equals y hashCode para que JPA los utilice
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ReactionId)) return false;
-        ReactionId that = (ReactionId) o;
+        if (!(o instanceof ReactionPK)) return false;
+        ReactionPK that = (ReactionPK) o;
         return idUser == that.idUser &&
-                idPublication == that.idPublication &&
-                idComment == that.idComment;
+                idPublication == that.idPublication;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, idPublication, idComment);
+        return Objects.hash(idUser, idPublication);
     }
 }

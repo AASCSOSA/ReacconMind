@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
+    //@JsonIgnore
     private int idUser;
 
     private String name;
@@ -32,10 +32,10 @@ public class User {
 
     private String userName;
 
-    @JsonIgnore
+    //@JsonIgnore
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
-    @JsonIgnore
+    //@JsonIgnore
     @Enumerated(EnumType.STRING)
     private StatusType status = StatusType.Active;
 

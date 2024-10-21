@@ -24,18 +24,13 @@ public class Comment {
     @Column(name = "contentComment", nullable = false, length = 200)
     private String contentComment;
 
-    @Column(name = "commentDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp commentDate;
 
-    // Constructores
-    public Comment() {
-    }
 
-    public Comment(User user, Publication publication, String contentComment, Timestamp commentDate) {
+    public Comment(User user, Publication publication, String contentComment) {
         this.user = user;
         this.publication = publication;
         this.contentComment = contentComment;
-        this.commentDate = commentDate;
+
     }
 
     // Getters y Setters
@@ -71,11 +66,5 @@ public class Comment {
         this.contentComment = contentComment;
     }
 
-    public Timestamp getCommentDate() {
-        return commentDate;
-    }
 
-    public void setCommentDate(Timestamp commentDate) {
-        this.commentDate = commentDate;
-    }
 }

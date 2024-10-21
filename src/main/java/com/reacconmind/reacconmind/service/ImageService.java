@@ -26,7 +26,7 @@ public class ImageService {
             String fileName = multipartFile.getOriginalFilename();
             fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));
             File file = this.convertToFile(multipartFile, fileName);
-            String URL = this.uploadFile(file, fileName);
+            String URL = this.uploadFile(file, "imagesPublication/" + fileName);
             file.delete();
             return URL;
         } catch (Exception e) {
@@ -48,16 +48,22 @@ public class ImageService {
         return tempFile;
     }
 
-    private String uploadFile(File file, String fileName) throws IOException {
-        BlobId blobId = BlobId.of("reacconmindfirebase.appspot.com", fileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
+    private String uploadFile(File file, String filePath) throws IOException {
+        String extension = this.getExtension(filePath);
+        String contentType = extension.equals(".png") ? "image/png" : "image/jpeg"; // Define el tipo de contenido según
+                                                                                    // la extensión
+
+        BlobId blobId = BlobId.of("pruebamario-d679e.appspot.com", filePath);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                .setContentType(contentType) // Usa el tipo de contenido correcto
+                .build();
         InputStream inputStream = ImageService.class.getClassLoader().getResourceAsStream("firebase-private-key.json");
         Credentials credentials = GoogleCredentials.fromStream(inputStream);
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
 
-        String downloadURL = "https://firebasestorage.googleapis.com/v0/b/<bucket-name>/o/%s?alt=media";
-        return String.format(downloadURL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+        String downloadURL = "https://firebasestorage.googleapis.com/v0/b/reacconmindfirebase.appspot.com/o/%s?alt=media";
+        return String.format(downloadURL, URLEncoder.encode(filePath, StandardCharsets.UTF_8));
     }
 
 }

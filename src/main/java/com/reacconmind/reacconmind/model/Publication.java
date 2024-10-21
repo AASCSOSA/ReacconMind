@@ -1,9 +1,19 @@
 package com.reacconmind.reacconmind.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ForeignKey;
+
+
 
 @Entity
-@Table(name = "publication")
+@Table(name = "Publication")
 public class Publication {
 
     @Id
