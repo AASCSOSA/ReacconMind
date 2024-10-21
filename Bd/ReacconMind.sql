@@ -4,14 +4,14 @@ USE reacconMind;
 -- USE sys;
 -- DROP DATABASE reacconMind;
 
-
 CREATE TABLE User (
     idUser INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255), -- Contraseña hasheada, puede ser NULL si el usuario se autentica con Google
     imageProfile VARCHAR(2083) NOT NULL, -- URL para la imagen de perfil
-    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada
+    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada,
+    thumbnail VARCHAR(2083),
     biography VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
@@ -150,15 +150,13 @@ CREATE TABLE Reply (
 
 CREATE TABLE Reaction (
     idUser INT NOT NULL,
-    idPublication INT,
-    idComment INT,
+    idPublication INT NOT NULL,
     liked BOOLEAN NOT NULL, -- true: le gusta, false: no le gusta
     reactionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE,
-    FOREIGN KEY (idComment) REFERENCES Comment(idComment) ON DELETE CASCADE,
-    UNIQUE (idUser, idPublication, idComment), -- Evita múltiples reacciones
-    PRIMARY KEY (idUser, idPublication, idComment) -- Llave primaria compuesta
+    UNIQUE (idUser, idPublication), -- Evita múltiples reacciones
+    PRIMARY KEY (idUser, idPublication) -- Llave primaria compuesta
 );
 
 CREATE TABLE MentionedUser (
