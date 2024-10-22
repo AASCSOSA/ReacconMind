@@ -1,10 +1,8 @@
 package com.reacconmind.reacconmind.model;
-import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 @Document(collection = "Message")
 public class Message {
 
@@ -13,8 +11,7 @@ public class Message {
     private int idSender; 
     private int idAddressee; 
     private String content;     
-    private String multimedia; 
-    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private String multimedia;
     private String shippingDate; 
 
     public Message() {}
@@ -76,11 +73,7 @@ public class Message {
         this.shippingDate = shippingDate;
     }
 
-    @Override
-    public String toString() {
-        return "Message [idMessage=" + idMessage + ", idSender=" + idSender + ", idAddressee=" + idAddressee
-                + ", content=" + content + ", multimedia=" + multimedia + "]";
-    }
+
 
 
 }

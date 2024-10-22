@@ -71,10 +71,4 @@ public class MessageDTO {
     public void setShippingDate(LocalDateTime shippingDate) {
         this.shippingDate = shippingDate;
     }
-
-    @Override
-    public String toString() {
-        return "MessageDTO [idMessage=" + idMessage + ", idSender=" + idSender + ", idAddressee=" + idAddressee
-                + ", content=" + content + ", multimedia=" + multimedia + ", shippingDate=" + shippingDate + "]";
-    }
 }

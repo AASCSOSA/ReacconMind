@@ -1,8 +1,6 @@
 package com.reacconmind.reacconmind.repository;
 
 import java.util.List;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

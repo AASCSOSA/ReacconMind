@@ -86,26 +86,13 @@ public class MessageController {
         @ApiResponse(responseCode = "404", description = "No messages found for the specified date.")
     })
     @GetMapping("/by-date")
-    public ResponseEntity<?> getMessagesByDate(
+    public ResponseEntity<List<MessageDTO>> getMessagesByDate(
         @Parameter(description = "Date to filter messages (format: yyyy-MM-dd)", required = true)
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-
-        try {
-            // Intentamos obtener los mensajes
-            List<MessageDTO> messages = messageService.getMessagesByDate(date);
-            
-            if (messages.isEmpty()) {
-                // Si no se encuentran mensajes, retornamos un 404
-                return ResponseEntity.status(404).body("No messages found for the specified date.");
-            }
-
-            // Si se encuentran mensajes, devolvemos un 200 con los mensajes
-            return ResponseEntity.ok(messages);
-        } catch (IllegalArgumentException e) {
-            // En caso de fecha futura, devolvemos un 400 Bad Request con un mensaje
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
+        List<MessageDTO> messages = messageService.getMessagesByDate(date);
+        return ResponseEntity.ok(messages);
     }
+    
     
     
     
