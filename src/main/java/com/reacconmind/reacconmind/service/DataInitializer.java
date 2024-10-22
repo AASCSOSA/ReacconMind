@@ -28,8 +28,6 @@ public class DataInitializer implements CommandLineRunner {
                 "mario.pv@teziutlan.tecnm.mx",
                 "Professor",
                 "mario",
-                "default_image_url",
-                "default_image_url",
                 "I am a professor.",
                 "professor",
                 AuthType.Email,
@@ -41,8 +39,6 @@ public class DataInitializer implements CommandLineRunner {
                 "john.doe@example.com",
                 "John Doe",
                 "john123",
-                "default_image_url",
-                "default_image_url",
                 "Hello, I'm John.",
                 "john_doe",
                 AuthType.Email,
@@ -54,8 +50,6 @@ public class DataInitializer implements CommandLineRunner {
                 "jane.doe@example.com",
                 "Jane Doe",
                 "jane123",
-                "default_image_url",
-                "default_image_url",
                 "Hi, I'm Jane.",
                 "jane_doe",
                 AuthType.Email,
@@ -68,8 +62,6 @@ public class DataInitializer implements CommandLineRunner {
             String email,
             String name,
             String plainPassword,
-            String imageProfile,
-            String imageFacade,
             String biography,
             String userName,
             AuthType typeAuth,
@@ -79,17 +71,19 @@ public class DataInitializer implements CommandLineRunner {
         Optional<User> existingUser = userService.findUserByEmail(email);
 
         if (!existingUser.isPresent()) {
-            User user = new User(
-                    0, name,
-                    email,
-                    plainPassword,
-                    imageProfile,
-                    imageFacade,
-                    biography,
-                    userName,
-                    typeAuth,
-                    status,
-                    theme, themeBot);
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(plainPassword);
+            user.setUserName(userName);
+            user.setBiography(biography);
+            user.setImageProfile(user.getImageProfile()); // Usa el valor predeterminado
+            user.setImageFacade(user.getImageFacade()); // Usa el valor predeterminado
+            user.setThumbnail(user.getThumbnail()); // Usa el valor predeterminado
+            user.setTypeAuth(typeAuth != null ? typeAuth : AuthType.Email); // Usa el valor predeterminado si es nulo
+            user.setStatus(status != null ? status : StatusType.Active); // Usa el valor predeterminado si es nulo
+            user.setTheme(theme != null ? theme : ThemeType.Light); // Usa el valor predeterminado si es nulo
+            user.setThemeBot(themeBot != null ? themeBot : ThemeBotType.CombinatedMedia); // Usa el valor predeterminado
             userService.save(user);
         }
     }

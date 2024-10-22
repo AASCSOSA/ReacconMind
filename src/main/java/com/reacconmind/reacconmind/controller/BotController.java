@@ -3,6 +3,7 @@ package com.reacconmind.reacconmind.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.reacconmind.reacconmind.dto.BotDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reacconmind.reacconmind.dto.BotDTO;
 import com.reacconmind.reacconmind.model.Bot;
 import com.reacconmind.reacconmind.service.BotService;
 
@@ -97,7 +97,27 @@ public class BotController {
 
     /* 
     @Autowired
-    private BotService service;
+    private BotService botService;
+
+    @Operation(summary = "Get all Bots", description = "Retrieve a list of all bots.")
+    @ApiResponse(responseCode = "200", description = "List of bots retrieved successfully.", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BotDTO.class))) })
+    @GetMapping
+    public List<BotDTO> getAllBots() {
+        List<Bot> bots = botService.getAllBots();
+        return bots.stream().map(botService::convertEntityToDTO).toList();
+    }
+
+    @Operation(summary = "Get a Bot by ID", description = "Retrieve a bot by its ID.")
+    @ApiResponse(responseCode = "200", description = "Bot retrieved successfully.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = BotDTO.class)) })
+    @ApiResponse(responseCode = "404", description = "Bot not found.")
+    @GetMapping("/{idBot}")
+    public ResponseEntity<BotDTO> getBotById(@PathVariable int idBot) {
+        Optional<Bot> bot = botService.getBotById(idBot);
+        return bot.map(b -> ResponseEntity.ok(botService.convertEntityToDTO(b)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @Operation(summary = "Create a Bot", description = "Create a new bot.")
     @ApiResponse(responseCode = "200", description = "Bot created correctly.", content = {
@@ -130,6 +150,7 @@ public class BotController {
         // service.save(botDTO);
         // return ResponseEntity.ok("Bot added successfully");
     }
+
 
     @Operation(summary = "Get all Bots", description = "Gets a list of all registered bots.")
     @ApiResponse(responseCode = "200", description = "List of bots obtained correctly", content = {

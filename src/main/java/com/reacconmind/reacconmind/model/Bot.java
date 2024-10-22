@@ -64,23 +64,9 @@ public class Bot {
     public void setTheme(ThemeBotType theme) {
         this.theme = theme;
     }
-/* 
-    public Multimedia getMultimedia() {
-        return multimedia;
-    }
 
-    public void setMultimedia(Multimedia multimedia) {
-        this.multimedia = multimedia;
-    }
 
-    public Timestamp getShippingDate() {
-        return shippingDate;
-    }
 
-    public void setShippingDate(Timestamp shippingDate) {
-        this.shippingDate = shippingDate;
-    }
-*/
 
 }
 
