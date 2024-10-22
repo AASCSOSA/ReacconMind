@@ -1,25 +1,21 @@
-package com.reacconmind.reacconmind.model;
+package com.reacconmind.reacconmind.dto;
+
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-@Document(collection = "Message")
-public class Message {
 
-    @Id
-    private int idMessage; 
-    private int idSender; 
-    private int idAddressee; 
-    private String content;     
-    private String multimedia; 
-    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private String shippingDate; 
+public class MessageDTO {
+    private int idMessage;
+    private int idSender;
+    private int idAddressee;
+    private String content;
+    private String multimedia;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime shippingDate;
 
-    public Message() {}
-    
-    public Message(int idMessage, int idSender, int idAddressee, String content, String multimedia, String shippingDate) {
+    public MessageDTO() {}
+
+    public MessageDTO(int idMessage, int idSender, int idAddressee, String content, String multimedia, LocalDateTime shippingDate) {
         this.idMessage = idMessage;
         this.idSender = idSender;
         this.idAddressee = idAddressee;
@@ -68,19 +64,17 @@ public class Message {
         this.multimedia = multimedia;
     }
 
-    public String getShippingDate() {
+    public LocalDateTime getShippingDate() {
         return shippingDate;
     }
 
-    public void setShippingDate(String shippingDate) {
+    public void setShippingDate(LocalDateTime shippingDate) {
         this.shippingDate = shippingDate;
     }
 
     @Override
     public String toString() {
-        return "Message [idMessage=" + idMessage + ", idSender=" + idSender + ", idAddressee=" + idAddressee
-                + ", content=" + content + ", multimedia=" + multimedia + "]";
+        return "MessageDTO [idMessage=" + idMessage + ", idSender=" + idSender + ", idAddressee=" + idAddressee
+                + ", content=" + content + ", multimedia=" + multimedia + ", shippingDate=" + shippingDate + "]";
     }
-
-
 }
