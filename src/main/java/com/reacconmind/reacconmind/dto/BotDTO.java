@@ -1,10 +1,29 @@
 package com.reacconmind.reacconmind.dto;
 
+import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.reacconmind.reacconmind.model.ThemeBotType;
+
 public class BotDTO {
+
+    @JsonProperty("idBot")
     private int idBot;
+    @JsonProperty("name")
     private String name;
-    private String theme;
+    @JsonProperty("theme")
+    private ThemeBotType theme;
+    @JsonProperty("shippingDate")
+    private Timestamp shippingDate;
 //    private int idMultimedia; 
+    // public BotDTO() {}
+
+    //  public BotDTO(String name, ThemeBotType theme, Timestamp shippingDate) {
+    //      this.name = name;
+    //      this.theme = theme;
+    //      this.shippingDate = shippingDate;
+    //  }
+
 
     public int getIdBot() {
         return idBot;
@@ -22,13 +41,22 @@ public class BotDTO {
         this.name = name;
     }
 
-    public String getTheme() {
+    public ThemeBotType getTheme() {
         return theme;
     }
 
-    public void setTheme(String theme) {
+    public void setTheme(ThemeBotType theme) {
         this.theme = theme;
     }
+
+    public Timestamp getShippingDate() {
+        return shippingDate;
+    }
+
+    public void setShippingDate(Timestamp shippingDate) {
+        this.shippingDate = shippingDate;
+    }
+
 /* 
     public int getIdMultimedia() {
         return idMultimedia;
@@ -37,4 +65,14 @@ public class BotDTO {
     public void setIdMultimedia(int idMultimedia) {
         this.idMultimedia = idMultimedia;
     }*/
+
+    @Override
+    public String toString() {
+        return "BotDTO{" +
+                "idBot=" + idBot +
+                ", name='" + name + '\'' +
+                ", theme=" + theme +
+                ", shippingDate=" + shippingDate +
+                '}';
+    }
 }

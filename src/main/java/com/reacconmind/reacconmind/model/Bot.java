@@ -1,7 +1,5 @@
 package com.reacconmind.reacconmind.model;
 
-
-import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -11,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 public class Bot {
@@ -19,12 +18,11 @@ public class Bot {
     private int idBot;
 
     @Column(nullable = false)
-    @JsonProperty("name")
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @JsonProperty("theme")
-    private Theme theme;
+    @Column(nullable = false)
+    private ThemeBotType theme = ThemeBotType.CombinatedMedia;
 
     /*@ManyToOne
     @JoinColumn(name = "idMultimedia", nullable = true)
@@ -34,11 +32,14 @@ public class Bot {
     @OneToMany(mappedBy = "bot", cascade = CascadeType.ALL, fetch = FetchType.LAZY ,orphanRemoval = true)
     private List<Publication> publications;*/
 
-    @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp shippingDate;
+    // @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    // private Timestamp shippingDate;
+    // public Bot() {}
 
-    public Bot() {
-    }
+    // public Bot(String name, ThemeBotType theme) {
+    //     this.name = name;
+    //     this.theme = theme; 
+    // }
 
     public int getIdBot() {
         return idBot;
@@ -56,11 +57,11 @@ public class Bot {
         this.name = name;
     }
 
-    public Theme getTheme() {
+    public ThemeBotType getTheme() {
         return theme;
     }
 
-    public void setTheme(Theme theme) {
+    public void setTheme(ThemeBotType theme) {
         this.theme = theme;
     }
 /* 
@@ -71,7 +72,7 @@ public class Bot {
     public void setMultimedia(Multimedia multimedia) {
         this.multimedia = multimedia;
     }
-*/
+
     public Timestamp getShippingDate() {
         return shippingDate;
     }
@@ -79,13 +80,7 @@ public class Bot {
     public void setShippingDate(Timestamp shippingDate) {
         this.shippingDate = shippingDate;
     }
+*/
 
-    public enum Theme {
-        Sports,
-        Technology,
-        News,
-        Music,
-        Movies
-    }
 }
 

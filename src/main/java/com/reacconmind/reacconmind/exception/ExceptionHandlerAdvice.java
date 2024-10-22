@@ -59,4 +59,6 @@ public class ExceptionHandlerAdvice {
             "An unexpected error occurred"
         );
     }
+
+    
 }
