@@ -1,8 +1,8 @@
+
 CREATE DATABASE reacconMind;
 USE reacconMind;
 -- USE sys;
 -- DROP DATABASE reacconMind;
-
 
 CREATE TABLE User (
     idUser INT PRIMARY KEY AUTO_INCREMENT,
@@ -10,7 +10,8 @@ CREATE TABLE User (
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255), -- Contraseña hasheada, puede ser NULL si el usuario se autentica con Google
     imageProfile VARCHAR(2083) NOT NULL, -- URL para la imagen de perfil
-    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada
+    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada,
+    thumbnail VARCHAR(2083),
     biography VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
@@ -23,7 +24,7 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Multimedia (
-    id_multimedia INT PRIMARY KEY AUTO_INCREMENT,
+    idMultimedia INT PRIMARY KEY AUTO_INCREMENT,
     url VARCHAR(2083) NOT NULL,
     type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
     uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -35,7 +36,7 @@ CREATE TABLE Bot (
     theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
     idMultimedia INT,
     shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
+    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(idMultimedia) ON DELETE SET NULL
 );
 
 CREATE TABLE Publication (
@@ -58,8 +59,8 @@ CREATE TABLE Follower (
     PRIMARY KEY (idUserFollower, idFollowing, followingType),  
     FOREIGN KEY (idUserFollower) REFERENCES User(idUser) ON DELETE CASCADE,  -- El seguidor debe ser un usuario
     -- Validación basada en el tipo de seguidor
-    FOREIGN KEY (idFollowing) REFERENCES User(idUser) ON DELETE CASCADE,  -- Seguir a un usuario
-    FOREIGN KEY (idFollowing) REFERENCES Bot(idBot) ON DELETE CASCADE     -- Seguir a un bot
+    FOREIGN KEY (idFollowing) REFERENCES User(idUser) ON DELETE CASCADE,  
+    FOREIGN KEY (idFollowing) REFERENCES Bot(idBot) ON DELETE CASCADE     
 );
 
 CREATE TABLE Image (
@@ -70,8 +71,6 @@ CREATE TABLE Image (
     idPublication INT,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE
 );
-
-
 
 CREATE TABLE Hashtag (
     idHashtag INT PRIMARY KEY AUTO_INCREMENT,
@@ -119,14 +118,12 @@ CREATE TABLE Moderation (
     PRIMARY KEY (idUser, idPublication, idModerationType) -- Llave primaria compuesta
 );
 
-
-
 CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
-    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment','Moderation') NOT NULL,
-    content VARCHAR(50),
-    estate ENUM('Read', 'Unread') NOT NULL,
+    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment', 'Alert') NOT NULL,
+    content VARCHAR(100),
+	state ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE
 );
@@ -153,15 +150,13 @@ CREATE TABLE Reply (
 
 CREATE TABLE Reaction (
     idUser INT NOT NULL,
-    idPublication INT,
-    idComment INT,
+    idPublication INT NOT NULL,
     liked BOOLEAN NOT NULL, -- true: le gusta, false: no le gusta
     reactionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES User(idUser) ON DELETE CASCADE,
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE,
-    FOREIGN KEY (idComment) REFERENCES Comment(idComment) ON DELETE CASCADE,
-    UNIQUE (idUser, idPublication, idComment), -- Evita múltiples reacciones
-    PRIMARY KEY (idUser, idPublication, idComment) -- Llave primaria compuesta
+    UNIQUE (idUser, idPublication), -- Evita múltiples reacciones
+    PRIMARY KEY (idUser, idPublication) -- Llave primaria compuesta
 );
 
 CREATE TABLE MentionedUser (

@@ -13,7 +13,7 @@ import jakarta.persistence.ForeignKey;
 
 
 @Entity
-@Table(name = "publication")
+@Table(name = "Publication")
 public class Publication {
 
     @Id

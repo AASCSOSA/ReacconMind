@@ -62,8 +62,8 @@ public class ReactionController {
     @Operation(summary = "Delete a reaction")
     @ApiResponse(responseCode = "204", description = "Reaction deleted successfully")
     @DeleteMapping("/{idUser}/{idPublication}/{idComment}")
-    public void deleteReaction(@PathVariable int idUser, @PathVariable int idPublication, @PathVariable int idComment) {
-        ReactionPK reactionPK = new ReactionPK(idUser, idPublication, idComment);
+    public void deleteReaction(@PathVariable int idUser, @PathVariable int idPublication) {
+        ReactionPK reactionPK = new ReactionPK(idUser, idPublication);
         reactionService.deleteReaction(reactionPK);
     }
 }

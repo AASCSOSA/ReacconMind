@@ -1,15 +1,10 @@
 package com.reacconmind.reacconmind.model;
 
-
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.IdClass;
-
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "Reaction")
@@ -24,23 +19,17 @@ public class Reaction {
     @Column(name = "idPublication", nullable = false)
     private int idPublication;
 
-    @Id
-    @Column(name = "idComment", nullable = false)
-    private int idComment;
-
     @Column(name = "liked", nullable = false)
     private boolean liked;
 
-
-
     // Constructor vacío (requerido por JPA)
-    public Reaction() {}
+    public Reaction() {
+    }
 
     // Constructor con parámetros
-    public Reaction(int idUser, int idPublication, int idComment, boolean liked) {
+    public Reaction(int idUser, int idPublication, boolean liked) {
         this.idUser = idUser;
         this.idPublication = idPublication;
-        this.idComment = idComment;
         this.liked = liked;
 
     }
@@ -62,14 +51,6 @@ public class Reaction {
         this.idPublication = idPublication;
     }
 
-    public int getIdComment() {
-        return idComment;
-    }
-
-    public void setIdComment(int idComment) {
-        this.idComment = idComment;
-    }
-
     public boolean isLiked() {
         return liked;
     }
@@ -77,6 +58,5 @@ public class Reaction {
     public void setLiked(boolean liked) {
         this.liked = liked;
     }
-
 
 }

@@ -47,13 +47,15 @@ public class ImageService {
         }
         return tempFile;
     }
+
     private String uploadFile(File file, String filePath) throws IOException {
         String extension = this.getExtension(filePath);
-        String contentType = extension.equals(".png") ? "image/png" : "image/jpeg";  // Define el tipo de contenido según la extensión
+        String contentType = extension.equals(".png") ? "image/png" : "image/jpeg"; // Define el tipo de contenido según
+                                                                                    // la extensión
 
         BlobId blobId = BlobId.of("pruebamario-d679e.appspot.com", filePath);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-                .setContentType(contentType)  // Usa el tipo de contenido correcto
+                .setContentType(contentType) // Usa el tipo de contenido correcto
                 .build();
         InputStream inputStream = ImageService.class.getClassLoader().getResourceAsStream("firebase-private-key.json");
         Credentials credentials = GoogleCredentials.fromStream(inputStream);
