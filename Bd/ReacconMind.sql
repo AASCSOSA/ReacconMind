@@ -22,6 +22,22 @@ CREATE TABLE User (
     INDEX (username)
 );
 
+CREATE TABLE Multimedia (
+    id_multimedia INT PRIMARY KEY AUTO_INCREMENT,
+    url VARCHAR(2083) NOT NULL,
+    type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
+    uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Bot (
+    idBot INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
+    idMultimedia INT,
+    shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
+);
+
 CREATE TABLE Publication (
     idPublication INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT,
@@ -55,12 +71,7 @@ CREATE TABLE Image (
     FOREIGN KEY (idPublication) REFERENCES Publication(idPublication) ON DELETE CASCADE
 );
 
-CREATE TABLE Multimedia (
-    id_multimedia INT PRIMARY KEY AUTO_INCREMENT,
-    url VARCHAR(2083) NOT NULL,
-    type ENUM('Image', 'Video', 'Audio') NOT NULL, -- Tipo de multimedia
-    uploadDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+
 
 CREATE TABLE Hashtag (
     idHashtag INT PRIMARY KEY AUTO_INCREMENT,
@@ -108,19 +119,12 @@ CREATE TABLE Moderation (
     PRIMARY KEY (idUser, idPublication, idModerationType) -- Llave primaria compuesta
 );
 
-CREATE TABLE Bot (
-    idBot INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
-    idMultimedia INT,
-    shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idMultimedia) REFERENCES Multimedia(id_multimedia) ON DELETE SET NULL
-);
+
 
 CREATE TABLE Notification (
     idNotification INT PRIMARY KEY AUTO_INCREMENT,
     idUser INT NOT NULL,
-    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment') NOT NULL,
+    typeNotification ENUM('Message', 'Like', 'Follow', 'Comment','Moderation') NOT NULL,
     content VARCHAR(50),
     estate ENUM('Read', 'Unread') NOT NULL,
     dateNotification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

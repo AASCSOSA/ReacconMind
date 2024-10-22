@@ -29,6 +29,7 @@ public class User {
     private String biography;
 
     private String userName;
+
     @JsonIgnore
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
@@ -42,12 +43,24 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ThemeBotType themeBot = ThemeBotType.CombinatedMedia;
 
-    public User() {
-    }
+    
 
-    public User(int idUser, String name, String email, String password, String imageProfile, String imageFacade,
-            String biography, String userName, AuthType typeAuth, StatusType status, ThemeType theme,
-            ThemeBotType themeBot) {
+    public User() {}
+
+    public User(
+        int idUser,
+        String name,
+        String email,
+        String password,
+        String imageProfile,
+        String imageFacade,
+        String biography,
+        String userName,
+        AuthType typeAuth,
+        StatusType status,
+        ThemeType theme,
+        ThemeBotType themeBot
+    ) {
         this.idUser = idUser;
         this.name = name;
         this.email = email;
@@ -157,4 +170,5 @@ public class User {
     public void setThemeBot(ThemeBotType themeBot) {
         this.themeBot = themeBot;
     }
+
 }
