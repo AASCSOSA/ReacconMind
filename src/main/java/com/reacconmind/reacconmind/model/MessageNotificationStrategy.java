@@ -20,7 +20,3 @@ public class MessageNotificationStrategy implements NotificationStrategy {
         System.out.println("Notificación saved in database " + notification.getContent());
     }
 }
-
-
-
-

@@ -1,6 +1,5 @@
 package com.reacconmind.reacconmind.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -9,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.sql.Date;
 
 @Entity
 public class Notification {
@@ -29,14 +27,6 @@ public class Notification {
 
     @Enumerated(EnumType.STRING)
     private State state = State.Unread;
-
-    @Column(
-        updatable = false,
-        insertable = false,
-        nullable = false,
-        columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-    )
-    private Date dateNotification;
 
     public int getIdNotification() {
         return idNotification;
@@ -78,14 +68,6 @@ public class Notification {
         this.state = state;
     }
 
-    public Date getDateNotification() {
-        return dateNotification;
-    }
-
-    public void setDateNotification(Date dateNotification) {
-        this.dateNotification = dateNotification;
-    }
-
     @Override
     public String toString() {
         return (
@@ -96,20 +78,15 @@ public class Notification {
             content +
             " :: " +
             state +
-            " :: " +
-            dateNotification
+            " :: " 
         );
     }
 
     public enum TypeNotification {
-        Message,
-        Like,
-        Follow,
-        Comment,
+        Message, Like, Follow, Comment, Alert
     }
 
     public enum State {
-        Read,
-        Unread,
+        Read, Unread
     }
 }

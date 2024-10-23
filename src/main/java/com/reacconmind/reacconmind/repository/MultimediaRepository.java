@@ -1,12 +1,9 @@
 package com.reacconmind.reacconmind.repository;
 
+import com.reacconmind.reacconmind.model.Multimedia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.reacconmind.reacconmind.model.Notification;
-
-
 @Repository
-public interface NotificationRepository extends JpaRepository<Notification, Integer> {
-    
+public interface MultimediaRepository extends JpaRepository<Multimedia, Integer> {
 }
