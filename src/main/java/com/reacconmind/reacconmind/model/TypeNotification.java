@@ -5,5 +5,6 @@ public enum TypeNotification {
     Like, 
     Follow, 
     Comment, 
-    Alert
+    Alert,
+    Moderation
 }
