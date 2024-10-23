@@ -1,10 +1,8 @@
 package com.reacconmind.reacconmind.controller;
 
 import com.reacconmind.reacconmind.dto.ImageDTO;
-import com.reacconmind.reacconmind.dto.PublicationDTO;
 import com.reacconmind.reacconmind.model.Image;
 import com.reacconmind.reacconmind.repository.ImageRepository;
-import com.reacconmind.reacconmind.repository.PublicationRepository;
 import com.reacconmind.reacconmind.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,8 +162,4 @@ public class ImageController {
     public List<ImageDTO> findAllImages() {
         return imageRepository.findAllImages();
     }
-
-
-
-
 }
