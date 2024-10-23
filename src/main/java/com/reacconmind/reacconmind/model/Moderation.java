@@ -2,7 +2,6 @@ package com.reacconmind.reacconmind.model;
 
 import com.reacconmind.reacconmind.enums.ModerationTypeEnum;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,9 +26,6 @@ public class Moderation {
     @Enumerated(EnumType.STRING)
     @Column(name = "moderation_type", nullable = false)
     private ModerationTypeEnum moderationType;
-
-    @Column(name = "moderation_date", nullable = false)
-    private LocalDateTime moderationDate;
 
     // Getters y setters
     public int getIdModeration() {
@@ -62,13 +58,5 @@ public class Moderation {
 
     public void setModerationType(ModerationTypeEnum moderationType) {
         this.moderationType = moderationType;
-    }
-
-    public LocalDateTime getModerationDate() {
-        return moderationDate;
-    }
-
-    public void setModerationDate(LocalDateTime moderationDate) {
-        this.moderationDate = moderationDate;
     }
 }

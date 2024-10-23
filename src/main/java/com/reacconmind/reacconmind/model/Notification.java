@@ -20,7 +20,7 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)
-    private User idUser;
+    private int idUser;
 
     @Enumerated(EnumType.STRING)
     private TypeNotification typeNotification;
@@ -46,12 +46,12 @@ public class Notification {
         this.idNotification = idNotification;
     }
 
-    public User getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(User idUser) {
-        this.idUser = idUser;
+    public void setIdUser(int userId) {
+        this.idUser = userId;
     }
 
     public TypeNotification getTypeNotification() {

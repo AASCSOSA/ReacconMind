@@ -4,6 +4,7 @@ import com.reacconmind.reacconmind.dto.ModerationResponseDTO;
 import com.reacconmind.reacconmind.model.Moderation;
 import com.reacconmind.reacconmind.enums.ModerationTypeEnum;
 import com.reacconmind.reacconmind.service.ModerationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
 public class ModerationController {
     @Autowired
     private ModerationService moderationService;
-
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @GetMapping
     public List<ModerationResponseDTO> getAllModerations() {
@@ -76,8 +74,7 @@ public class ModerationController {
         return new ModerationResponseDTO(
             moderation.getIdPublication(),
             moderation.getModerationType().toString(),
-            getModerationMessage(moderation.getModerationType()),
-            moderation.getModerationDate().format(formatter)
+            getModerationMessage(moderation.getModerationType())
         );
     }
 

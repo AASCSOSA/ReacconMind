@@ -4,13 +4,11 @@ public class ModerationResponseDTO {
     private int publicationId;
     private String status;
     private String message;
-    private String dateModeration;
 
-    public ModerationResponseDTO(int publicationId, String status, String message, String dateModeration) {
+    public ModerationResponseDTO(int publicationId, String status, String message) {
         this.publicationId = publicationId;
         this.status = status;
         this.message = message;
-        this.dateModeration = dateModeration;
     }
 
     // Getters y setters
@@ -36,13 +34,5 @@ public class ModerationResponseDTO {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getDateModeration() {
-        return dateModeration;
-    }
-
-    public void setDateModeration(String dateModeration) {
-        this.dateModeration = dateModeration;
     }
 }
