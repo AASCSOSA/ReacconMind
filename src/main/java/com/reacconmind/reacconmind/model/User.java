@@ -1,5 +1,7 @@
 package com.reacconmind.reacconmind.model;
 
+import java.sql.Date;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -14,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@JsonIgnore
+    // @JsonIgnore
     private int idUser;
 
     private String name;
@@ -32,10 +34,10 @@ public class User {
 
     private String userName;
 
-    //@JsonIgnore
+    // @JsonIgnore
     @Enumerated(EnumType.STRING)
     private AuthType typeAuth = AuthType.Email;
-    //@JsonIgnore
+    // @JsonIgnore
     @Enumerated(EnumType.STRING)
     private StatusType status = StatusType.Active;
 
@@ -44,6 +46,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private ThemeBotType themeBot = ThemeBotType.CombinatedMedia;
+    @JsonIgnore
+    private Date dateCreationProfile;
 
     public User() {
     }
@@ -64,6 +68,14 @@ public class User {
         this.status = status;
         this.theme = theme;
         this.themeBot = themeBot;
+    }
+
+    public Date getDateCreationProfile() {
+        return dateCreationProfile;
+    }
+
+    public void setDateCreationProfile(Date dateCreationProfile) {
+        this.dateCreationProfile = dateCreationProfile;
     }
 
     public int getIdUser() {

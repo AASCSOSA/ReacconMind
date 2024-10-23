@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.reacconmind.reacconmind.model.AuthType;
 import com.reacconmind.reacconmind.model.StatusType;
@@ -26,6 +27,8 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    FirebaseUser firebaseUser;
 
     public List<User> getAll() {
         return userRepository.findAll();
@@ -75,4 +78,28 @@ public class UserService {
         Page<User> users = userRepository.findAll(pageRequest);
         return users.getContent();
     }
+
+    public String uploadImageAndUpdateUser(MultipartFile multipartFile, Integer userId) {
+        if (multipartFile.isEmpty()) {
+            return "The file is empty.";
+        }
+
+        FirebaseUser.UploadResponse uploadResponse = firebaseUser.upload(multipartFile);
+        if (uploadResponse == null) {
+            return "Error uploading the image.";
+        }
+
+        User user = getByIdUser(userId);
+        if (user == null) {
+            return "User not found.";
+        }
+
+        user.setImageProfile(uploadResponse.getOriginalUrl());
+        user.setThumbnail(uploadResponse.getThumbnailUrl());
+
+        save(user);
+
+        return "Image updated successfully.";
+    }
+
 }
