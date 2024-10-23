@@ -3,6 +3,7 @@ package com.reacconmind.reacconmind.dto;
 import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.reacconmind.reacconmind.model.Multimedia;
 import com.reacconmind.reacconmind.model.ThemeBotType;
 
 public class BotDTO {
@@ -15,15 +16,16 @@ public class BotDTO {
     private ThemeBotType theme;
     @JsonProperty("shippingDate")
     private Timestamp shippingDate;
-//    private int idMultimedia; 
-    // public BotDTO() {}
+    private Multimedia multimedia;
 
-    //  public BotDTO(String name, ThemeBotType theme, Timestamp shippingDate) {
-    //      this.name = name;
-    //      this.theme = theme;
-    //      this.shippingDate = shippingDate;
-    //  }
+    public BotDTO() {
+    }
 
+    public BotDTO(String name, ThemeBotType theme, Timestamp shippingDate) {
+        this.name = name;
+        this.theme = theme;
+        this.shippingDate = shippingDate;
+    }
 
     public int getIdBot() {
         return idBot;
@@ -57,14 +59,13 @@ public class BotDTO {
         this.shippingDate = shippingDate;
     }
 
-/* 
-    public int getIdMultimedia() {
-        return idMultimedia;
+    public Multimedia getMultimedia() {
+        return multimedia;
     }
 
-    public void setIdMultimedia(int idMultimedia) {
-        this.idMultimedia = idMultimedia;
-    }*/
+    public void setMultimedia(Multimedia multimedia) {
+        this.multimedia = multimedia;
+    }
 
     @Override
     public String toString() {

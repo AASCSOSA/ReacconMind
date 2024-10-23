@@ -1,7 +1,5 @@
 package com.reacconmind.reacconmind.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,7 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Bot {
@@ -24,22 +23,20 @@ public class Bot {
     @Column(nullable = false)
     private ThemeBotType theme = ThemeBotType.CombinatedMedia;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "idMultimedia", nullable = true)
     private Multimedia multimedia;
+    
+    public Bot() {}
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "bot", cascade = CascadeType.ALL, fetch = FetchType.LAZY ,orphanRemoval = true)
-    private List<Publication> publications;*/
+    public Bot(int idBot, String name, ThemeBotType theme, Multimedia multimedia) {
+        this.idBot = idBot;
+        this.name = name;
+        this.theme = theme;
+        this.multimedia = multimedia;
+    }
 
-    // @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    // private Timestamp shippingDate;
-    // public Bot() {}
 
-    // public Bot(String name, ThemeBotType theme) {
-    //     this.name = name;
-    //     this.theme = theme; 
-    // }
 
     public int getIdBot() {
         return idBot;
@@ -65,8 +62,12 @@ public class Bot {
         this.theme = theme;
     }
 
+    public Multimedia getMultimedia() {
+        return multimedia;
+    }
 
-
-
+    public void setMultimedia(Multimedia multimedia) {
+        this.multimedia = multimedia;
+    }
 }
 
