@@ -75,9 +75,18 @@ public class NotificationService {
         }
     }
 
-    public List<Notification> getUnreadNotifications() {
+    public List<Notification> getUnreadNotifications(Integer userId) {
         return repository.findAll().stream()
-                .filter(notification -> notification.getState() == NotificationStatus.Unread)
+                .filter(notification -> {
+                    boolean isUnread = notification.getState() == NotificationStatus.Unread;
+                    boolean isForUser = notification.getIdUser() != null && notification.getIdUser().getIdUser() == userId;
+                    // Esto te ayudará a ver qué filtros están fallando
+                    System.out.println("Notification ID: " + notification.getIdNotification() + 
+                                       " | Unread: " + isUnread + 
+                                       " | For User: " + isForUser + 
+                                       " | User ID in Notification: " + (notification.getIdUser() != null ? notification.getIdUser().getIdUser() : "null"));
+                    return isUnread && isForUser;
+                })
                 .collect(Collectors.toList());
     }
 
