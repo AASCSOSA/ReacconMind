@@ -36,70 +36,70 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Hashtag")
 @RequestMapping("/ReacconMind/hashtags")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
-        RequestMethod.PUT })
+                RequestMethod.PUT })
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "ReacconMind API", description = "ReacconMind Api to Hashtag Management", version = "1.0"))
 public class HashtagController {
-    @Autowired
-    private HashtagService hashtagService;
+        @Autowired
+        private HashtagService hashtagService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+        @Autowired
+        private ModelMapper modelMapper;
 
-    @Operation(summary = "Get all Hashtags", description = "Get a List with all Hashtags.")
-    @ApiResponse(responseCode = "200", description = "Hashtag list was get succefully", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Hashtag.class))) })
-    @GetMapping
-    public List<Hashtag> getAll() {
-        return hashtagService.getAll();
-    }
+        @Operation(summary = "Get all Hashtags", description = "Get a List with all Hashtags.")
+        @ApiResponse(responseCode = "200", description = "Hashtag list was get succefully", content = {
+                        @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Hashtag.class))) })
+        @GetMapping
+        public List<Hashtag> getAll() {
+                return hashtagService.getAll();
+        }
 
-    @Operation(summary = "Get all Hashtags with pagination", description = "Retrieve a paginated list of hashtags. Specify the page number and page size to get a subset of hashtags.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of hashtags"),
-            @ApiResponse(responseCode = "400", description = "Invalid page number or page size provided"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping(value = "pagination", params = { "page", "pageSize" })
-    public List<Hashtag> getAllPaginated(
-            @Parameter(description = "The page number to retrieve. Default is 0 (first page).", required = false, example = "1") @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+        @Operation(summary = "Get all Hashtags with pagination", description = "Retrieve a paginated list of hashtags. Specify the page number and page size to get a subset of hashtags.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Successful retrieval of hashtags"),
+                        @ApiResponse(responseCode = "400", description = "Invalid page number or page size provided"),
+                        @ApiResponse(responseCode = "500", description = "Internal server error")
+        })
+        @GetMapping(value = "pagination", params = { "page", "pageSize" })
+        public List<Hashtag> getAllPaginated(
+                        @Parameter(description = "The page number to retrieve. Default is 0 (first page).", required = false, example = "1") @RequestParam(value = "page", defaultValue = "0", required = false) int page,
 
-            @Parameter(description = "The number of hashtags per page. Default is 10.", required = false, example = "5") @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        List<Hashtag> hashtags = hashtagService.getAll(page, pageSize);
-        return hashtags;
-    }
+                        @Parameter(description = "The number of hashtags per page. Default is 10.", required = false, example = "5") @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                List<Hashtag> hashtags = hashtagService.getAll(page, pageSize);
+                return hashtags;
+        }
 
-    @Operation(summary = "Get a Hashtag by ID", description = "Get a specific Hashtag with the ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Hashtag found", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Hashtag.class)) }),
-            @ApiResponse(responseCode = "400", description = "Invalid Hashtag ID", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Authentication failure", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", description = "Hashtag not found", content = @Content) })
-    @GetMapping("/{idHashtag}")
-    public ResponseEntity<?> getByIdHashtag(@PathVariable Integer idHashtag) {
-        Hashtag hashtag = hashtagService.getByIdHashtag(idHashtag);
-        return new ResponseEntity<Hashtag>(hashtag, HttpStatus.OK);
-    }
+        @Operation(summary = "Get a Hashtag by ID", description = "Get a specific Hashtag with the ID.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Hashtag found", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = Hashtag.class)) }),
+                        @ApiResponse(responseCode = "400", description = "Invalid Hashtag ID", content = @Content),
+                        @ApiResponse(responseCode = "401", description = "Authentication failure", content = @Content(schema = @Schema(hidden = true))),
+                        @ApiResponse(responseCode = "404", description = "Hashtag not found", content = @Content) })
+        @GetMapping("/{idHashtag}")
+        public ResponseEntity<?> getByIdHashtag(@PathVariable Integer idHashtag) {
+                Hashtag hashtag = hashtagService.getByIdHashtag(idHashtag);
+                return new ResponseEntity<Hashtag>(hashtag, HttpStatus.OK);
+        }
 
-    @Operation(summary = "Add a new Hashtag", description = "Add a new Hashtag to the system")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Hashtag added successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = HashtagDTO.class)),
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid hashtag data", content = @Content),
-    })
-    @PostMapping
-    public ResponseEntity<HashtagDTO> createHashtag(@RequestBody HashtagDTO hashtagDTO) {
-        HashtagDTO savedHashtag = convertToDTO(hashtagService.save(convertToEntity(hashtagDTO)));
-        return new ResponseEntity<>(savedHashtag, HttpStatus.CREATED);
-    }
+        @Operation(summary = "Add a new Hashtag", description = "Add a new Hashtag to the system")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "Hashtag added successfully", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = HashtagDTO.class)),
+                        }),
+                        @ApiResponse(responseCode = "400", description = "Invalid hashtag data", content = @Content),
+        })
+        @PostMapping
+        public ResponseEntity<HashtagDTO> createHashtag(@RequestBody HashtagDTO hashtagDTO) {
+                HashtagDTO savedHashtag = convertToDTO(hashtagService.save(convertToEntity(hashtagDTO)));
+                return new ResponseEntity<>(savedHashtag, HttpStatus.CREATED);
+        }
 
-    private HashtagDTO convertToDTO(Hashtag hashtag) {
-		return modelMapper.map(hashtag, HashtagDTO.class);
-	}
+        private HashtagDTO convertToDTO(Hashtag hashtag) {
+                return modelMapper.map(hashtag, HashtagDTO.class);
+        }
 
-	public Hashtag convertToEntity(HashtagDTO hashtagDTO) {
-		return modelMapper.map(hashtagDTO, Hashtag.class);
-	}
+        public Hashtag convertToEntity(HashtagDTO hashtagDTO) {
+                return modelMapper.map(hashtagDTO, Hashtag.class);
+        }
 }
