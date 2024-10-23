@@ -15,22 +15,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/moderations")
 public class ModerationController {
+
     @Autowired
     private ModerationService moderationService;
 
+    @Operation(summary = "Get all moderations")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found all moderations")
+    })
     @GetMapping
     public List<ModerationResponseDTO> getAllModerations() {
         return moderationService.getAllModerations().stream()
             .map(this::convertToDTO)
             .collect(Collectors.toList());
     }
-
+    
+    @Operation(summary = "Get moderations by publication ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found moderations for publication")
+    })
     @GetMapping("/publication/{publicationId}")
     public List<ModerationResponseDTO> getModerationsByPublication(@PathVariable int publicationId) {
         return moderationService.getModerationsByPublication(publicationId).stream()
@@ -38,6 +51,10 @@ public class ModerationController {
             .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get moderations by user ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found moderations for user")
+    })
     @GetMapping("/user/{userId}")
     public List<ModerationResponseDTO> getModerationsByUser(@PathVariable int userId) {
         return moderationService.getModerationsByUser(userId).stream()
@@ -45,6 +62,11 @@ public class ModerationController {
             .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get moderation by ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found moderation by ID"),
+        @ApiResponse(responseCode = "404", description = "Moderation not found")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ModerationResponseDTO> getModerationById(@PathVariable int id) {
         return moderationService.getModerationById(id)
@@ -52,6 +74,10 @@ public class ModerationController {
             .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Moderate text")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Text moderated successfully")
+    })
     @PostMapping("/moderate/text")
     public ResponseEntity<ModerationResponseDTO> moderateText(
             @RequestParam int publicationId,
@@ -61,6 +87,10 @@ public class ModerationController {
         return ResponseEntity.ok(convertToDTO(result));
     }
 
+    @Operation(summary = "Moderate image")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Image moderated successfully")
+    })
     @PostMapping("/moderate/image")
     public ResponseEntity<ModerationResponseDTO> moderateImage(
             @RequestParam int publicationId,
