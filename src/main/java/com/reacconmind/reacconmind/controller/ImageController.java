@@ -1,10 +1,8 @@
 package com.reacconmind.reacconmind.controller;
 
 import com.reacconmind.reacconmind.dto.ImageDTO;
-import com.reacconmind.reacconmind.dto.PublicationDTO;
 import com.reacconmind.reacconmind.model.Image;
 import com.reacconmind.reacconmind.repository.ImageRepository;
-import com.reacconmind.reacconmind.repository.PublicationRepository;
 import com.reacconmind.reacconmind.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,16 +39,9 @@ public class ImageController {
         try {
             // Subir la imagen y obtener la URL
             String url = imageService.upload(file);
-
-            // Crear una nueva instancia de Image
             Image image = new Image();
             image.setUrl(url);
-            image.setUploadDate(new Timestamp(System.currentTimeMillis()));
-
-            // Guardar la imagen en la base de datos
             imageRepository.save(image);
-
-            // Crear un objeto JSON con la URL
             Map<String, String> response = new HashMap<>();
             response.put("url", url);
 
@@ -64,7 +54,7 @@ public class ImageController {
 
     @Operation(summary = "Get all images", description = "Retrieve all images from the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Images retrieved successfully"),
+            @ApiResponse(responseCode = "200", description = "Images retrieved successfully", content = @Content(schema = @Schema(implementation = Image.class))),
             @ApiResponse(responseCode = "500", description = "Failed to retrieve images")
     })
     @GetMapping("/images")
@@ -80,7 +70,7 @@ public class ImageController {
 
     @Operation(summary = "Get image by ID", description = "Retrieve an image by its ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Image retrieved successfully"),
+            @ApiResponse(responseCode = "200", description = "Image retrieved successfully", content = @Content(schema = @Schema(implementation = Image.class))),
             @ApiResponse(responseCode = "404", description = "Image not found"),
             @ApiResponse(responseCode = "500", description = "Failed to retrieve image")
     })
@@ -96,15 +86,25 @@ public class ImageController {
 
     @Operation(summary = "Delete image by ID", description = "Delete an image by its ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Image deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Image not found"),
             @ApiResponse(responseCode = "500", description = "Failed to delete image")
     })
     @DeleteMapping("/images/{id}")
     public ResponseEntity<Map<String, String>> deleteImageById(@PathVariable int id) {
         try {
-            if (imageRepository.existsById(id)) {
+            Optional<Image> imageOptional = imageRepository.findById(id);
+            if (imageOptional.isPresent()) {
+                Image image = imageOptional.get();
+
+                // Eliminar la imagen de Firebase
+                if (image.getUrl() != null && !image.getUrl().isEmpty()) {
+                    imageService.deleteFromFirebase(image.getUrl());
+                }
+
+                // Eliminar la imagen de la base de datos
                 imageRepository.deleteById(id);
+
                 Map<String, String> response = new HashMap<>();
                 response.put("message", "Image deleted successfully");
                 return ResponseEntity.ok(response);
@@ -119,19 +119,27 @@ public class ImageController {
 
     @Operation(summary = "Update image by ID", description = "Update an image's URL and other details by its ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Image updated successfully"),
+            @ApiResponse(responseCode = "200", description = "Image updated successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Image not found"),
             @ApiResponse(responseCode = "500", description = "Failed to update image")
     })
-    @PutMapping("/images/{id}")
-    public ResponseEntity<Map<String, String>> updateImageById(@PathVariable int id, @RequestBody Image updatedImage) {
+    @PutMapping(value = "/images/{id}", consumes = { "multipart/form-data" })
+    public ResponseEntity<Map<String, String>> updateImageById(
+            @PathVariable int id,
+            @RequestParam("file") MultipartFile file) {
         try {
             Optional<Image> imageOptional = imageRepository.findById(id);
             if (imageOptional.isPresent()) {
                 Image image = imageOptional.get();
-                image.setUrl(updatedImage.getUrl()); // Actualizar la URL
-                image.setThumbnail(updatedImage.getThumbnail()); // Actualizar la miniatura si es necesario
-                image.setUploadDate(new Timestamp(System.currentTimeMillis())); // Actualizar la fecha de carga
+
+                // Eliminar la imagen anterior de Firebase
+                if (image.getUrl() != null && !image.getUrl().isEmpty()) {
+                    imageService.deleteFromFirebase(image.getUrl());
+                }
+
+                // Subir la nueva imagen y obtener la URL
+                String newUrl = imageService.upload(file);
+                image.setUrl(newUrl); // Actualizar la URL
 
                 // Guardar los cambios en la base de datos
                 imageRepository.save(image);
@@ -148,13 +156,10 @@ public class ImageController {
         }
     }
 
-
-    @GetMapping("/images/juan")
+    @Operation(summary = "Get all images for DTO", description = "Retrieve all images in DTO format")
+    @ApiResponse(responseCode = "200", description = "Images retrieved successfully", content = @Content(schema = @Schema(implementation = ImageDTO.class)))
+    @GetMapping("/images/dto")
     public List<ImageDTO> findAllImages() {
         return imageRepository.findAllImages();
     }
-
-
-
-
 }

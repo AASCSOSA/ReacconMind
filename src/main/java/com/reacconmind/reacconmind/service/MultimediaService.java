@@ -1,40 +1,102 @@
 package com.reacconmind.reacconmind.service;
 
-import com.reacconmind.reacconmind.model.Multimedia;
-import com.reacconmind.reacconmind.repository.MultimediaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.UUID;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 
 @Service
 public class MultimediaService {
 
-    @Autowired
-    private MultimediaRepository multimediaRepository;
+    // Método principal para subir archivos multimedia
+    public String upload(MultipartFile multipartFile) {
+        try {
+            String fileName = multipartFile.getOriginalFilename();
+            String extension = this.getExtension(fileName);
 
-    // Obtener todos los elementos multimedia
-    public List<Multimedia> getAll() {
-        return multimediaRepository.findAll();
-    }
+            // Asignamos una carpeta basada en el tipo de archivo
+            String folder = determineFolder(extension);
 
-    // Obtener un elemento multimedia por su ID
-    public Optional<Multimedia> getById(Integer id) {
-        return multimediaRepository.findById(id); // Devuelve un Optional
-    }
+            if (folder == null) {
+                return "Unsupported file type";
+            }
 
-    // Crear o actualizar un elemento multimedia
-    public Multimedia save(Multimedia multimedia) {
-        return multimediaRepository.save(multimedia);
-    }
+            // Generamos un nombre de archivo único
+            fileName = folder + "/" + UUID.randomUUID().toString().concat(extension);
 
-    // Eliminar un elemento multimedia por su ID
-    public boolean delete(Integer id) {
-        if (multimediaRepository.existsById(id)) {
-            multimediaRepository.deleteById(id);
-            return true; // Eliminación exitosa
+            // Convertimos el archivo a un archivo temporal
+            File file = this.convertToFile(multipartFile, fileName);
+
+            // Subimos el archivo a Firebase Storage
+            String URL = this.uploadFile(file, fileName);
+
+            // Eliminamos el archivo temporal
+            file.delete();
+
+            return URL;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "The file could not be uploaded";
         }
-        return false; // El elemento no se encontró
+    }
+
+    // Determina la carpeta basada en la extensión del archivo
+    private String determineFolder(String extension) {
+        if (extension.equalsIgnoreCase(".jpg") || extension.equalsIgnoreCase(".jpeg") || extension.equalsIgnoreCase(".png")) {
+            return "imageMultimedia";  // Carpeta para imágenes
+        } else if (extension.equalsIgnoreCase(".mp3")) {
+            return "audioMultimedia";  // Carpeta para audios
+        } else if (extension.equalsIgnoreCase(".mp4") || extension.equalsIgnoreCase(".avi") || extension.equalsIgnoreCase(".mov")) {
+            return "videoMultimedia";  // Carpeta para videos
+        }
+        return null;  // Tipo de archivo no soportado
+    }
+
+    // Obtiene la extensión del archivo
+    private String getExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
+    }
+
+    // Convierte MultipartFile a un archivo temporal
+    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
+        File tempFile = new File(fileName);
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            fos.write(multipartFile.getBytes());
+            fos.close();
+        }
+        return tempFile;
+    }
+
+    // Método para subir el archivo a Firebase Storage
+    private String uploadFile(File file, String fileName) throws IOException {
+        // Creamos el BlobId con el bucket y el nombre del archivo
+        BlobId blobId = BlobId.of("juan-a650b.appspot.com", fileName);  // Cambia tu bucket aquí
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
+
+        // Obtenemos las credenciales de Firebase
+        InputStream inputStream = MultimediaService.class.getClassLoader().getResourceAsStream("firebase-private-key.json");
+        Credentials credentials = GoogleCredentials.fromStream(inputStream);
+        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+
+        // Subimos el archivo a Firebase Storage
+        storage.create(blobInfo, Files.readAllBytes(file.toPath()));
+
+        // Creamos la URL de descarga del archivo
+        String downloadURL = "https://firebasestorage.googleapis.com/v0/b/juan-a650b.appspot.com/o/%s?alt=media";
+        return String.format(downloadURL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
     }
 }

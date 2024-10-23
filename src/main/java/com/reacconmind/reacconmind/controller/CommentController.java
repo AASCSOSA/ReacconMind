@@ -1,11 +1,8 @@
 package com.reacconmind.reacconmind.controller;
 
 import com.reacconmind.reacconmind.dto.CommentDTO;
-import com.reacconmind.reacconmind.dto.ImageDTO;
-import com.reacconmind.reacconmind.dto.PublicationDTO;
 import com.reacconmind.reacconmind.model.Comment;
 import com.reacconmind.reacconmind.repository.CommentRepository;
-import com.reacconmind.reacconmind.repository.PublicationRepository;
 import com.reacconmind.reacconmind.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -27,6 +24,9 @@ public class CommentController {
 
     @Autowired
     private CommentService service;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Operation(summary = "Get all comments")
     @ApiResponse(responseCode = "200", description = "Found Comments", content = {
@@ -91,13 +91,8 @@ public class CommentController {
         }
     }
 
-    @Autowired
-    private CommentRepository commentRepository;
-    @GetMapping("/comments/juan")
+    @GetMapping("/comments/dto")
     public List<CommentDTO> findAllComments() {
         return commentRepository.findAllComments();
     }
-
-
-
 }
