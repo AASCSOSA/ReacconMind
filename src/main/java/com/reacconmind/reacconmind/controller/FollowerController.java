@@ -5,12 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.reacconmind.reacconmind.dto.FollowerDTO;
-import com.reacconmind.reacconmind.model.Follower;
 import com.reacconmind.reacconmind.service.FollowerService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.List;
 
 @RestController
 @Tag(name ="Follower")

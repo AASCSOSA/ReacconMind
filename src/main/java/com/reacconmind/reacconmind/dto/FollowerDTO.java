@@ -1,7 +1,6 @@
 package com.reacconmind.reacconmind.dto;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class FollowerDTO {
     private int idUserFollower;
