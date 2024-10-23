@@ -52,19 +52,18 @@ public class UserController {
 
         @Autowired
         private UserService userService;
-        @Autowired
-        private FirebaseUser firebaseUser;
+
         @Autowired
         private ModelMapper modelMapper;
 
-        @Operation(summary = "Get all Users", description = "Get a list of all registered users.")
+       /*  @Operation(summary = "Get all Users", description = "Get a list of all registered users.")
         @ApiResponse(responseCode = "200", description = "List of users obtained successfully", content = {
                         @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))),
         })
         @GetMapping
         public List<User> getAll() {
                 return userService.getAll();
-        }
+        } */
 
         @Operation(summary = "Get all Users with pagination", description = "Retrieve a paginated list of users. Specify the page number and page size to get a subset of users.")
         @ApiResponses(value = {
