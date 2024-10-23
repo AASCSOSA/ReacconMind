@@ -10,10 +10,10 @@ CREATE TABLE User (
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255), -- Contraseña hasheada, puede ser NULL si el usuario se autentica con Google
     imageProfile VARCHAR(2083) NOT NULL, -- URL para la imagen de perfil
-    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada,
-    thumbnail VARCHAR(2083),
+    imageFacade VARCHAR(2083) NOT NULL, -- URL para la imagen de fachada
     biography VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
+    thumbnail VARCHAR(2083),
     typeAuth ENUM('Email', 'Google') NOT NULL DEFAULT 'Email', -- Tipo de autenticación
     dateCreationProfile TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status ENUM ('Active','Inactive') DEFAULT 'Active',
@@ -33,7 +33,7 @@ CREATE TABLE Multimedia (
 CREATE TABLE Bot (
     idBot INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
-    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies') NOT NULL,
+    theme ENUM('Sports', 'Technology', 'News', 'Music', 'Movies', 'CombinatedMedia') NOT NULL DEFAULT 'CombinatedMedia',
     idMultimedia INT,
     shippingDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idMultimedia) REFERENCES Multimedia(idMultimedia) ON DELETE SET NULL

@@ -1,58 +1,56 @@
 package com.reacconmind.reacconmind.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.reacconmind.reacconmind.dto.FollowerDTO;
 import com.reacconmind.reacconmind.model.Follower;
 import com.reacconmind.reacconmind.model.FollowerPK;
-import com.reacconmind.reacconmind.model.User;
+import com.reacconmind.reacconmind.model.Follower.FollowingType;
 import com.reacconmind.reacconmind.repository.FollowerRepository;
-import com.reacconmind.reacconmind.repository.UserRepository;
+
+import java.sql.Timestamp;
 
 @Service
 public class FollowerService {
-
     @Autowired
     private FollowerRepository followerRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    // Seguir a un usuario
-    public Follower followUser(int followerId, int followingId) {
-        Optional<User> follower = userRepository.findById(followerId);
-        Optional<User> following = userRepository.findById(followingId);
-
-        if (follower.isPresent() &&
-                following.isPresent() &&
-                followerId != followingId) {
-            Follower followerEntity = new Follower(
-                    following.get(),
-                    follower.get());
-            return followerRepository.save(followerEntity);
+    public FollowerDTO followUser(int idFollower, int idFollowing) {
+        if (idFollower != idFollowing) {
+            FollowerPK followerPK = new FollowerPK(idFollower, idFollowing, FollowingType.User);
+            Follower follower = new Follower(followerPK);
+            followerRepository.save(follower);
+            return new FollowerDTO(idFollower, idFollowing, FollowingType.User.name(), new Timestamp(System.currentTimeMillis()));
         }
-        throw new IllegalArgumentException(
-                "Usuario no válido o los IDs son iguales");
+        throw new IllegalArgumentException("Invalid user or IDs are the same");
     }
 
-    public void unfollowUser(int followerId, int followingId) {
-        FollowerPK id = new FollowerPK(followingId, followerId);
+    public FollowerDTO followBot(int idFollower, int idFollowing) {
+        FollowerPK followerPK = new FollowerPK(idFollower, idFollowing, FollowingType.Bot);
+        Follower follower = new Follower(followerPK);
+        followerRepository.save(follower);
+        return new FollowerDTO(idFollower, idFollowing, FollowingType.Bot.name(), new Timestamp(System.currentTimeMillis()));
+    } 
+
+    public void unfollowUser(int idFollower, int idFollowing) {
+        FollowerPK id = new FollowerPK(idFollower, idFollowing, FollowingType.User);
         followerRepository.deleteById(id);
     }
 
-    public List<Follower> getFollowers(int userId) {
-        return followerRepository.findFollowersByUserId(userId);
+    public void unfollowBot(int idFollower, int idBot) {
+        FollowerPK id = new FollowerPK(idFollower, idBot, FollowingType.Bot);
+        followerRepository.deleteById(id);
     }
 
-    public List<Follower> getFollowing(int userId) {
-        return followerRepository.findFollowingByUserId(userId);
-    }
-
-    public boolean isFollowing(int followerId, int followingId) {
-        FollowerPK id = new FollowerPK(followingId, followerId);
+    public boolean isFollowing(int idFollower, int idFollowing) {
+        FollowerPK id = new FollowerPK(idFollower, idFollowing, FollowingType.User);
         return followerRepository.existsById(id);
     }
+
+    public boolean isFollowingBot(int idFollower, int idBot) {
+        FollowerPK id = new FollowerPK(idFollower, idBot, FollowingType.Bot);
+        return followerRepository.existsById(id);
+    }
+
 }

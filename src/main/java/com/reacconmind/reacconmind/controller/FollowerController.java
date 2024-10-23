@@ -1,70 +1,55 @@
 package com.reacconmind.reacconmind.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.reacconmind.reacconmind.model.Follower;
+import com.reacconmind.reacconmind.dto.FollowerDTO;
 import com.reacconmind.reacconmind.service.FollowerService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@Tag(name = "Follower")
+@Tag(name ="Follower")
 @RequestMapping("ReacconMind/followers")
 public class FollowerController {
 
     @Autowired
-    private FollowerService service;
+    private FollowerService followerService;
 
-    @PostMapping("/follow")
-    public ResponseEntity<Follower> followUser(
-        @RequestParam int followerId,
-        @RequestParam int followingId
-    ) {
-        Follower follower = service.followUser(followerId, followingId);
-        return ResponseEntity.ok(follower);
+    @PostMapping("/follow/user")
+    public ResponseEntity<FollowerDTO> followUser(@RequestParam int idFollower, @RequestParam int idFollowing) {
+        FollowerDTO newFollower = followerService.followUser(idFollower, idFollowing);
+        return ResponseEntity.ok(newFollower);
     }
 
-    @DeleteMapping("/unfollow")
-    public ResponseEntity<Void> unfollowUser(
-        @RequestParam int followerId,
-        @RequestParam int followingId
-    ) {
-        service.unfollowUser(followerId, followingId);
+    @PostMapping("/follow/bot")
+    public ResponseEntity<FollowerDTO> followBot(@RequestParam int idFollower, @RequestParam int idFollowing) {
+        FollowerDTO newFollower = followerService.followBot(idFollower, idFollowing);
+        return ResponseEntity.ok(newFollower);
+    }
+
+    @DeleteMapping("/unfollow/user")
+    public ResponseEntity<Void> unfollowUser(@RequestParam int idFollower, @RequestParam int idFollowing) {
+        followerService.unfollowUser(idFollower, idFollowing);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{userId}/followers")
-    public ResponseEntity<List<Follower>> getFollowers(
-        @PathVariable int userId
-    ) {
-        List<Follower> followers = service.getFollowers(userId);
-        return ResponseEntity.ok(followers);
+    @DeleteMapping("/unfollow/bot")
+    public ResponseEntity<Void> unfollowBot(@RequestParam int idFollower, @RequestParam int idFollowing) {
+        followerService.unfollowBot(idFollower, idFollowing);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{userId}/following")
-    public ResponseEntity<List<Follower>> getFollowing(
-        @PathVariable int userId
-    ) {
-        List<Follower> following = service.getFollowing(userId);
-        return ResponseEntity.ok(following);
+    @GetMapping("/isFollowing/user")
+    public ResponseEntity<Boolean> isFollowing(@RequestParam int idFollower, @RequestParam int idFollowing) {
+        boolean isFollowing = followerService.isFollowing(idFollower, idFollowing);
+        return ResponseEntity.ok(isFollowing);
     }
 
-    @GetMapping("/isFollowing")
-    public ResponseEntity<Boolean> isFollowing(
-        @RequestParam int followerId,
-        @RequestParam int followingId
-    ) {
-        boolean isFollowing = service.isFollowing(followerId, followingId);
+    @GetMapping("/isFollowing/bot")
+    public ResponseEntity<Boolean> isFollowingBot(@RequestParam int idFollower, @RequestParam int idFollowing) {
+        boolean isFollowing = followerService.isFollowingBot(idFollower, idFollowing);
         return ResponseEntity.ok(isFollowing);
     }
 }

@@ -1,22 +1,21 @@
-package com.reacconmind.reacconmind.model;
+package com.reacconmind.reacconmind.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 
-@Document(collection = "Message")
-public class Message {
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-    @Id
-    private int idMessage; 
-    private int idSender; 
-    private int idAddressee; 
-    private String content;     
+public class MessageDTO {
+    private int idMessage;
+    private int idSender;
+    private int idAddressee;
+    private String content;
     private String multimedia;
-    private String shippingDate; 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime shippingDate;
 
-    public Message() {}
-    
-    public Message(int idMessage, int idSender, int idAddressee, String content, String multimedia, String shippingDate) {
+    public MessageDTO() {}
+
+    public MessageDTO(int idMessage, int idSender, int idAddressee, String content, String multimedia, LocalDateTime shippingDate) {
         this.idMessage = idMessage;
         this.idSender = idSender;
         this.idAddressee = idAddressee;
@@ -65,15 +64,11 @@ public class Message {
         this.multimedia = multimedia;
     }
 
-    public String getShippingDate() {
+    public LocalDateTime getShippingDate() {
         return shippingDate;
     }
 
-    public void setShippingDate(String shippingDate) {
+    public void setShippingDate(LocalDateTime shippingDate) {
         this.shippingDate = shippingDate;
     }
-
-
-
-
 }
